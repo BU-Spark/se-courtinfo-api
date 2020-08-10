@@ -11,6 +11,7 @@ hooks:
   ApplicationStop:
     - location: scripts/ApplicationStop.sh
     - timeout: 3600
+    - runas: root
   AfterInstall:
     - location: scripts/AfterInstall.sh
     - timeout: 3600

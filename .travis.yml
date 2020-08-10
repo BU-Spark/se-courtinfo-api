@@ -1,5 +1,3 @@
-language: python
-
 deploy:
   - provider: codedeploy
     revision_type: github
