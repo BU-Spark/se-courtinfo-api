@@ -7,6 +7,8 @@ from app.api.api_v1.routers.uploads import uploads_router
 from app.api.api_v1.routers.auth import auth_router
 from app.core import config
 from app.core.security import user_over_rate_limit
+from app.db.crud import create_user
+from app.db.schemas import UserCreate
 from app.db.session import SessionLocal
 from app.core.auth import get_current_active_user
 from app.core.celery_app import celery_app
@@ -35,6 +37,16 @@ async def db_session_middleware(request: Request, call_next):
 
 @app.get("/api/v1")
 async def root():
+    db = SessionLocal()
+    create_user(
+        db,
+        UserCreate(
+            email="admin@scda-api.org",
+            password="password",
+            is_active=True,
+            is_superuser=True,
+        ),
+    )
     return {"message": "Hello World"}
 
 
@@ -42,6 +54,7 @@ async def root():
 async def example_task():
     celery_app.send_task("app.tasks.example_task", args=["Hello World"])
     return {"message": "success"}
+
 
 # Routers
 app.include_router(

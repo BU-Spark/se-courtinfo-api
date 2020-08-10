@@ -1,0 +1,24 @@
+version: 0.1
+os: linux
+files:
+  - source: /
+    destination: /src/scdao-api/
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+hooks:
+  ApplicationStop:
+    - location: scripts/ApplicationStop.sh
+    - timeout: 3600
+  AfterInstall:
+    - location: scripts/AfterInstall.sh
+    - timeout: 3600
+    - runas: root
+  ApplicationStart:
+    - location: scripts/ApplicationStart.sh
+    - timeout: 3600
+
+
+
+
