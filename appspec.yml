@@ -9,15 +9,15 @@ permissions:
     owner: ubuntu
 hooks:
   ApplicationStop:
-    - location: scripts/ApplicationStop.sh
+    - location: /src/scdao-api/scripts/ApplicationStop.sh
     - timeout: 3600
     - runas: root
   AfterInstall:
-    - location: scripts/AfterInstall.sh
+    - location: /src/scdao-api/scripts/AfterInstall.sh
     - timeout: 3600
     - runas: root
   ApplicationStart:
-    - location: scripts/ApplicationStart.sh
+    - location: /src/scdao-api/scripts/ApplicationStart.sh
     - timeout: 3600
 
 
