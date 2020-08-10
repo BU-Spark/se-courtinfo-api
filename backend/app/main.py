@@ -47,7 +47,7 @@ async def root():
             is_superuser=True,
         ),
     )
-    return {"message": "Hello World"}
+    return {"message": "Not Hello World"}
 
 
 @app.get("/api/v1/task")
