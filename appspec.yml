@@ -6,7 +6,7 @@ files:
 permissions:
   - object: /
     pattern: "**"
-    owner: ubuntu
+    owner: deploy_user
 hooks:
   ApplicationStop:
     - location: /scripts/ApplicationStop.sh
