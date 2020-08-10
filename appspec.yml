@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /src/scdao-api/
+    destination: /srv/scdao-api/
 permissions:
   - object: /
     pattern: "**"
