@@ -1,3 +1,6 @@
+language: minimal
+dist: trusty
+
 deploy:
   - provider: codedeploy
     revision_type: github
