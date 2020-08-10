@@ -6,7 +6,7 @@ files:
 permissions:
   - object: /
     pattern: "**"
-    owner: ubuntu
+    owner: ec2-user
 hooks:
   ApplicationStop:
     - location: /src/scdao-api/scripts/ApplicationStop.sh
