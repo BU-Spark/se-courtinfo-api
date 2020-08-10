@@ -10,15 +10,15 @@ permissions:
 hooks:
   ApplicationStop:
     - location: /src/scdao-api/scripts/ApplicationStop.sh
-    - timeout: 3600
-    - runas: root
+      timeout: 3600
+      runas: root
   AfterInstall:
     - location: /src/scdao-api/scripts/AfterInstall.sh
-    - timeout: 3600
-    - runas: root
+      timeout: 3600
+      runas: root
   ApplicationStart:
     - location: /src/scdao-api/scripts/ApplicationStart.sh
-    - timeout: 3600
+      timeout: 3600
 
 
 
