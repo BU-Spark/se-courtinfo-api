@@ -9,7 +9,7 @@ permissions:
     owner: ec2-user
 hooks:
   ApplicationStop:
-    - location: /src/scdao-api/scripts/ApplicationStop.sh
+    - location: /scripts/ApplicationStop.sh
       timeout: 3600
       runas: root
   AfterInstall:
