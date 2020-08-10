@@ -6,7 +6,7 @@ files:
 permissions:
   - object: /
     pattern: "**"
-    owner: ec2-user
+    owner: ubuntu
 hooks:
   ApplicationStop:
     - location: /scripts/ApplicationStop.sh
