@@ -1,23 +1,25 @@
-version: 0.1
+version: 0.0
 os: linux
 files:
   - source: /
-    destination: /src/scdao-api/
+    destination: /srv/scdao-api/
+    overwrite: true
 permissions:
   - object: /
     pattern: "**"
-    owner: ubuntu
+    owner: deploy_user
 hooks:
   ApplicationStop:
-    - location: scripts/ApplicationStop.sh
-    - timeout: 3600
+    - location: /scripts/ApplicationStop.sh
+      timeout: 3600
+      runas: root
   AfterInstall:
-    - location: scripts/AfterInstall.sh
-    - timeout: 3600
-    - runas: root
+    - location: /scripts/AfterInstall.sh
+      timeout: 3600
+      runas: root
   ApplicationStart:
-    - location: scripts/ApplicationStart.sh
-    - timeout: 3600
+    - location: /scripts/ApplicationStart.sh
+      timeout: 3600
 
 
 

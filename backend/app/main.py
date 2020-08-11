@@ -37,17 +37,7 @@ async def db_session_middleware(request: Request, call_next):
 
 @app.get("/api/v1")
 async def root():
-    db = SessionLocal()
-    create_user(
-        db,
-        UserCreate(
-            email="admin@scda-api.org",
-            password="password",
-            is_active=True,
-            is_superuser=True,
-        ),
-    )
-    return {"message": "Hello World"}
+    return {"message": "Not Hello World"}
 
 
 @app.get("/api/v1/task")

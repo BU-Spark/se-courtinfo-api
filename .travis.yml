@@ -1,7 +1,5 @@
-language: python
-
-
-
+language: minimal
+dist: trusty
 
 deploy:
   - provider: codedeploy
@@ -9,6 +7,18 @@ deploy:
     wait_until_deployed: true
     access_key_id: $AWS_ACC_KEY
     secret_access_key: $AWS_SECRET
-    application: $CODE_DEPLOY_APP
-    deployment_group: $DEPLOY_GROUP
-    region: $REGION
+    application: SCDAO-API
+    deployment_group: SCDAO-API-DEV
+    region: us-east-1
+    on:
+      branch: dev
+  - provider: codedeploy
+    revision_type: github
+    wait_until_deployed: true
+    access_key_id: $AWS_ACC_KEY
+    secret_access_key: $AWS_SECRET
+    application: SCDAO-API
+    deployment_group: SCDAO-API-PROD
+    region: us-east-1
+    on:
+      branch: master
