@@ -3,6 +3,7 @@ os: linux
 files:
   - source: /
     destination: /srv/scdao-api/
+    overwrite: true
 permissions:
   - object: /
     pattern: "**"

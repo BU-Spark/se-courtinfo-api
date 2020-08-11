@@ -31,7 +31,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1
+    command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1 -b redis://redis:6379/0
 
   flower:  
     image: mher/flower
@@ -55,7 +55,12 @@ services:
       DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres'
       HASH_KEY: "${HASH_KEY}"
       HASH_ALG: "${HASH_ALG}"
-      JWT_Token_TTL: "${TOKEN_TTL}"
+      JWT_Token_TTL: 120
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://backend:8888/api"]
+      interval: 15s
+      timeout: 30s
+      retries: 5
     depends_on:
       - "postgres"
       - "redis"
