@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import typing as t
 
-from app.db.schemas import user_schemas
+from app.schemas import user_schemas
 from app.models import user_models
 from app.core.security import get_password_hash
 
@@ -14,7 +14,7 @@ def get_user(db: Session, user_id: int):
     return user
 
 
-def get_user_by_email(db: Session, email: str) -> user_schemas.UserBase:
+def get_user_by_email(db: Session, email: str) -> user_schemas.User:
     return db.query(user_models.User).filter(user_models.User.email == email).first()
 
 

@@ -2,9 +2,11 @@ from fastapi import FastAPI, Depends
 from starlette.requests import Request
 import uvicorn
 
+from app.api.api_v1.routers.tasks import task_router
 from app.api.api_v1.routers.users import users_router
 from app.api.api_v1.routers.uploads import uploads_router
 from app.api.api_v1.routers.auth import auth_router
+from app.aws.s3_client import upload_file_to_s3
 from app.core import config
 from app.core.security import user_over_rate_limit
 from app.db.session import SessionLocal
@@ -40,7 +42,7 @@ async def root():
 
 @app.get("/api/v1/task")
 async def example_task():
-    celery_app.send_task("app.tasks.example_task", args=["Hello World"])
+    celery_app.send_task("app.tasks.example_task", args=["Hello World!"])
     return {"message": "success"}
 
 
@@ -52,6 +54,14 @@ app.include_router(
     dependencies=[Depends(user_over_rate_limit), Depends(get_current_active_user), ],
 )
 app.include_router(auth_router, prefix="/api", tags=["auth"])
+
+# Task status router
+app.include_router(
+    task_router,
+    prefix="/api/v1",
+    tags=["tasks"],
+    dependencies=[Depends(get_current_active_user)]
+)
 
 # Uploads router
 app.include_router(

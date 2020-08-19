@@ -7,7 +7,7 @@ from fastapi import Request, HTTPException
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 import os
-from app.redis_handler.redis_session import get_redis_client
+from app.redis_handler.redis_session import get_redis_rate_limit_client
 import app.env_handler as envhandler
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/token")
@@ -45,7 +45,6 @@ def _over_limit(conn: redis.Redis, request: Request, duration: int, limit: int) 
     key = ip + bucket
     pipe.incr(key)
     pipe.expire(key, duration)
-    print('key:', key)
     if pipe.execute()[0] > limit:
         return True
     return False
@@ -65,7 +64,7 @@ def _over_limit_multi(conn: redis.Redis, request: Request, limits=None):
 
 # Raise an exception if the user(ip) has exceeded the rate limit
 def user_over_rate_limit(request: Request) -> None:
-    r_client = get_redis_client()
+    r_client = get_redis_rate_limit_client()
     if _over_limit_multi(r_client, request):
         raise HTTPException(status_code=429, detail="request exceeded limit")
     return None

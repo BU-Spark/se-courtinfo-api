@@ -1,13 +1,9 @@
-from PIL import Image
 from fastapi import UploadFile, File, HTTPException
 from typing import List
 import shutil
 import uuid
 import os.path
 from pathlib import Path
-
-from app.processor.criminal_complaint import extract_criminal_complaint
-from app.processor.text_extractor import extract_document_text
 
 ACCEPTED_FILE_FORMATS: List[str] = ["image/jpeg", "image/png", "application/pdf"]
 WRITE_BUFFER_SIZE = 100
@@ -58,4 +54,5 @@ def handle_upload_file(upload_file: UploadFile) -> Path:
     file_name = uuid.uuid4().hex + Path(upload_file.filename).suffix
     file_path = Path(os.path.join(TEMP_FILE_PATH, file_name))
     save_upload_file(upload_file, file_path)
+
     return file_path
