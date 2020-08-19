@@ -15,6 +15,7 @@ def init() -> None:
             password="password",
             is_active=True,
             is_superuser=True,
+            is_county_authorized=True
         ),
     )
 

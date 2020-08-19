@@ -4,8 +4,9 @@ import typing as t
 
 class UserBase(BaseModel):
     email: str
-    is_active: bool = True
+    is_active: bool = False
     is_superuser: bool = False
+    is_county_authorized: bool = False
     first_name: str = None
     last_name: str = None
 

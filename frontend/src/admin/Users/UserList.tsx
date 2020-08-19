@@ -18,6 +18,7 @@ export const UserList: FC = (props) => (
       <TextField source="last_name" />
       <BooleanField source="is_active" />
       <BooleanField source="is_superuser" />
+      <BooleanField source="is_county_authorized" />
       <EditButton />
     </Datagrid>
   </List>

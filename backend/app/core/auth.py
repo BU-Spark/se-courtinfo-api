@@ -10,7 +10,7 @@ from app.core import security
 
 
 async def get_current_user(
-    db=Depends(session.get_db), token: str = Depends(security.oauth2_scheme)
+        db=Depends(session.get_db), token: str = Depends(security.oauth2_scheme)
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -35,7 +35,7 @@ async def get_current_user(
 
 
 async def get_current_active_user(
-    current_user: user_models.User = Depends(get_current_user),
+        current_user: user_models.User = Depends(get_current_user),
 ):
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
@@ -43,11 +43,21 @@ async def get_current_active_user(
 
 
 async def get_current_active_superuser(
-    current_user: user_models.User = Depends(get_current_user),
+        current_user: user_models.User = Depends(get_current_user),
 ) -> user_models.User:
     if not current_user.is_superuser:
         raise HTTPException(
             status_code=403, detail="The user doesn't have enough privileges"
+        )
+    return current_user
+
+
+async def get_current_active_county_authorized(
+        current_user: user_models.User = Depends(get_current_user),
+) -> user_models.User:
+    if not current_user.is_county_authorized:
+        raise HTTPException(
+            status_code=403, detail="The user does not have county authorized permissions"
         )
     return current_user
 

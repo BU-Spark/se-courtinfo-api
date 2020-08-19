@@ -13,11 +13,15 @@ def get_cc(db: Session, cc_id: int) -> form_models.CriminalComplaint:
         form_models.CriminalComplaint.cc_id == cc_id).first()
 
 
-def get_cc_by_ident(db: Session, date_of_birth: str, def_name_adr: str) -> List[form_models.CriminalComplaint]:
+def get_all_cc(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(form_models.CriminalComplaint).order_by(form_models.CriminalComplaint.created_at.asc()).offset(
+        skip).limit(limit).all()
+
+
+def get_cc_by_name(db: Session, defen_name, limit: int):
     return db.query(form_models.CriminalComplaint).filter(
-        form_models.CriminalComplaint.defen_DOB == date_of_birth and
-        form_models.CriminalComplaint.defen_name_adr.like(def_name_adr)
-    )
+        form_models.CriminalComplaint.defen_name.like(defen_name)
+    ).limit(limit).all()
 
 
 def get_criminal_complaints(db: Session, skip: int = 0, limit: int = 250) -> List[form_models.CriminalComplaint]:

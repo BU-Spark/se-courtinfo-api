@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from pydantic.types import UUID4
 from sqlalchemy.orm import Session
 import typing as t
 
@@ -7,8 +8,8 @@ from app.models import user_models
 from app.core.security import get_password_hash
 
 
-def get_user(db: Session, user_id: int):
-    user = db.query(user_schemas.User).filter(user_schemas.User.id == user_id).first()
+def get_user(db: Session, user_id: UUID4):
+    user = db.query(user_models.User).filter(user_models.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
@@ -40,7 +41,7 @@ def create_user(db: Session, user: user_schemas.UserCreate):
     return db_user
 
 
-def delete_user(db: Session, user_id: int):
+def delete_user(db: Session, user_id: UUID4):
     user = get_user(db, user_id)
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -50,7 +51,7 @@ def delete_user(db: Session, user_id: int):
 
 
 def edit_user(
-    db: Session, user_id: int, user: user_schemas.UserEdit
+    db: Session, user_id: UUID4, user: user_schemas.UserEdit
 ) -> user_schemas.User:
     db_user = get_user(db, user_id)
     if not db_user:

@@ -2,6 +2,7 @@ import pickle
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic.types import UUID4
+from starlette.types import Message
 
 from app.crud.celery_crud import get_task_status
 from app.db.session import get_db
@@ -9,7 +10,7 @@ from app.db.session import get_db
 task_router = t = APIRouter()
 
 
-@t.get('/tasks/{task_id}')
+@t.get('/tasks/{task_id}', responses={404: {}})
 def task_details(
         task_id: UUID4,
         db=Depends(get_db),

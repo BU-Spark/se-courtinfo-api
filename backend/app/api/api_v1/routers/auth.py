@@ -26,6 +26,8 @@ async def login(
     )
     if user.is_superuser:
         permissions = "admin"
+    elif user.is_county_authorized:
+        permissions = "county"
     else:
         permissions = "user"
     access_token = security.create_access_token(

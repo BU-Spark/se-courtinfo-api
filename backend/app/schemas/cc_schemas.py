@@ -24,13 +24,13 @@ class CriminalComplaintBase(BaseModel):
     PCF_number: Optional[str]
     defen_xref_id: Optional[str]
     offense_codes: Optional[str]
-    raw_text: str
 
 
 class CriminalComplaintCreate(CriminalComplaintBase):
     created_by: UUID4
     img_key: str
     aws_bucket: str
+    raw_text: str
 
     class Config:
         orm_mode = True
@@ -41,6 +41,7 @@ class CriminalComplaintUpdate(CriminalComplaintBase):
     updated_by: UUID4
     img_key: Optional[str]
     aws_bucket: Optional[str]
+    raw_text: Optional[str]
 
     class Config:
         orm_mode = True
@@ -54,6 +55,7 @@ class CriminalComplaintInDBBase(CriminalComplaintBase):
     updated_at: Optional[datetime]
     img_key: Optional[str]
     aws_bucket: Optional[str]
+    raw_text: Optional[str]
 
     class Config:
         orm_mode = True
@@ -61,3 +63,16 @@ class CriminalComplaintInDBBase(CriminalComplaintBase):
 
 class CriminalComplaint(CriminalComplaintInDBBase):
     pass
+
+
+class CriminalComplaintOut(CriminalComplaintBase):
+    cc_id: int
+    created_by: UUID4
+    updated_by: Optional[UUID4]
+    created_at: datetime
+    updated_at: Optional[datetime]
+    img_key: Optional[str]
+    aws_bucket: Optional[str]
+
+    class Config:
+        orm_mode = True
