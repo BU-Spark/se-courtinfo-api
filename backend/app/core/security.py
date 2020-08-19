@@ -56,7 +56,7 @@ def _over_limit(conn: redis.Redis, request: Request, duration: int, limit: int) 
 # to see if this user is rate limited
 def _over_limit_multi(conn: redis.Redis, request: Request, limits=None):
     if limits is None:
-        limits = [(1, 10), (60, 1), (3600, 240)]
+        limits = [(1, 10), (60, 120), (3600, 240)]
     for duration, limit in limits:
         if _over_limit(conn, request, duration, limit):
             return True

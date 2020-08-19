@@ -7,8 +7,6 @@ from app.api.api_v1.routers.uploads import uploads_router
 from app.api.api_v1.routers.auth import auth_router
 from app.core import config
 from app.core.security import user_over_rate_limit
-from app.db.crud import create_user
-from app.db.schemas import UserCreate
 from app.db.session import SessionLocal
 from app.core.auth import get_current_active_user
 from app.core.celery_app import celery_app
