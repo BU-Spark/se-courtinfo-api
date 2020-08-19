@@ -1,4 +1,4 @@
-from app.db import models
+from app import models
 
 
 def test_get_users(client, test_superuser, superuser_token_headers):

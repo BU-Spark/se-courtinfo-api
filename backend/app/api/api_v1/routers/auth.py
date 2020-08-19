@@ -11,7 +11,7 @@ auth_router = r = APIRouter()
 
 @r.post("/token")
 async def login(
-    db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+        db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -37,7 +37,7 @@ async def login(
 
 @r.post("/signup")
 async def signup(
-    db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+        db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ):
     user = sign_up_new_user(db, form_data.username, form_data.password)
     if not user:
