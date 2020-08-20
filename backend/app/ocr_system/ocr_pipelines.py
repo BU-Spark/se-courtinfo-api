@@ -1,9 +1,10 @@
 import os
 
 from celery.exceptions import Ignore
+from fastapi import Depends
 from pydantic.types import UUID4
 
-from app.aws.s3_client import upload_file_to_s3
+from app.aws.s3_client import upload_file_to_s3, get_s3_client
 from app.celery_system.task_classes import TaskStates, TaskTypes
 from app.crud.cc_crud import create_cc
 from app.db.session import SessionLocal
@@ -14,7 +15,7 @@ from app.schemas.cc_schemas import CriminalComplaintBase, CriminalComplaintCreat
 
 
 def pipeline_criminal_complaint_form(task, image_path: str, current_user_id: UUID4, aws_obj_prefix: str,
-                                     aws_bucket: str):
+                                     aws_bucket: str, s3_client=get_s3_client()):
     """
     Wrapper function that handles the entire OCR pipeline from loading a file to processing
     and then returning the result of the OCR to the Celery backend.
@@ -27,7 +28,7 @@ def pipeline_criminal_complaint_form(task, image_path: str, current_user_id: UUI
         if safe_cc is None:
             task.update_state(state=TaskStates.OCR_FAILURE)
             raise Ignore()
-        (res, img_key) = upload_file_to_s3(image_path, aws_obj_prefix, aws_bucket)
+        (res, img_key) = upload_file_to_s3(s3_client, image_path, aws_obj_prefix, aws_bucket)
         if not res:
             task.update_state(state=TaskStates.AWS_FAILURE)
             # Cleanup temp files, we want to remove the file regardless of success

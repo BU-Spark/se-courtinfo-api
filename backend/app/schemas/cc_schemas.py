@@ -24,7 +24,7 @@ class CriminalComplaintBase(BaseModel):
     PCF_number: Optional[str]
     defen_xref_id: Optional[str]
     offense_codes: Optional[str]
-
+    raw_text: Optional[str]
 
 class CriminalComplaintCreate(CriminalComplaintBase):
     created_by: UUID4

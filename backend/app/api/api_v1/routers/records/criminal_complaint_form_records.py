@@ -1,7 +1,9 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
+from starlette import status
 
+from app.aws.s3_client import get_s3_client, create_presigned_url
 from app.crud.cc_crud import get_all_cc, get_cc, get_cc_by_name
 from app.db.session import get_db
 from app.schemas.cc_schemas import CriminalComplaintOut, CriminalComplaint, CriminalComplaintCreate
@@ -42,3 +44,22 @@ def get_single_ccf(
     """
     ccf = get_cc(db, cc_id)
     return ccf
+
+
+@r.get('/ccf/img/{cc_id}')
+def get_cc_img_signed_url(
+        cc_id: int,
+        db=Depends(get_db),
+        s3_client=Depends(get_s3_client)
+):
+    """
+    Get the presigned URL for the image corresponding to a particular record
+    """
+    image_resource_exception = HTTPException(status_code=400, detail="Image storage location not defined")
+    cc_db = get_cc(db, cc_id)
+    if cc_db.img_key is None:
+        raise image_resource_exception
+    if cc_db.aws_bucket is None:
+        raise image_resource_exception
+    url = create_presigned_url(s3_client, cc_db.aws_bucket, cc_db.img_key)
+    return {'url': url}

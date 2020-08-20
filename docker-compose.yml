@@ -66,6 +66,8 @@ services:
       HASH_ALG: "${HASH_ALG}"
       JWT_Token_TTL: 120
       S3_BUCKET_NAME: '${S3_BUCKET_NAME}'
+      S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
+      S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s

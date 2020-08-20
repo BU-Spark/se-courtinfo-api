@@ -14,3 +14,5 @@ S3_BUCKET_NAME: Final[str] = os.getenv("S3_BUCKET_NAME")
 POSTGRES_USER_NAME: Final[str] = os.getenv("POSTGRES_USER")
 # Postgres Password
 POSTGRES_PASSWORD: Final[str] = os.getenv("POSTGRES_PASSWORD")
+# AWS S3 Pre-signed URL Expiration Times in seconds
+S3_LINK_TTL: Final[int] = 120

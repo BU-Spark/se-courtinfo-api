@@ -1,5 +1,6 @@
 import pickle
 
+from celery import states
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic.types import UUID4
 from starlette.types import Message
@@ -26,5 +27,11 @@ def task_details(
     if db_task.result:
         raw_result = pickle.loads(db_task.result)
     else:
+        raw_result = None
+
+    # Since we adopt Celery's backend structure we need to check for failure of the task.
+    # In the case there is a failure Celery will include that data(the exception etc) as a result of the function
+    # this should not be returned to the client so we clear it out here if needed
+    if db_task.status == states.FAILURE:
         raw_result = None
     return {'celery_id': task_id, 'task_state': db_task.status, 'db_obj': raw_result}
