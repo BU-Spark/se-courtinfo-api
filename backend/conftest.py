@@ -1,18 +1,42 @@
+import pickle
+from uuid import uuid4
+
 import pytest
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database, drop_database
 from fastapi.testclient import TestClient
+from fastapi import Request
 import typing as t
 
+from app.celery_system.task_classes import TaskStates, TaskTypes
 from app.core import config, security
-from app.db.session import Base, get_db
-from app.db import models
+from app.core.security import user_over_rate_limit
+from app.db.session import get_db
+from app.db.base_class import Base
+from app import models
 from app.main import app
+from app.models import celery_models
 
 
 def get_test_db_url() -> str:
     return f"{config.SQLALCHEMY_DATABASE_URI}_test"
+
+
+def mock_rate_limit(request: Request) -> None:
+    """
+    Mocks the rate limit function. Just returns None always(ie does not throw an exception)
+    """
+    return None
+
+
+@pytest.fixture(scope='session', autouse=True)
+def replace_rate_limit():
+    """
+    Replace the rate limit dependency with a blank one that does
+    block requests
+    """
+    app.dependency_overrides[user_over_rate_limit] = mock_rate_limit
 
 
 @pytest.fixture
@@ -22,7 +46,7 @@ def test_db():
     This is to avoid tests affecting the database state of other tests.
     """
     # Connect to the test database
-    engine = create_engine(get_test_db_url(),)
+    engine = create_engine(get_test_db_url(), )
 
     connection = engine.connect()
     trans = connection.begin()
@@ -62,6 +86,8 @@ def create_test_db():
     ), "Test database already exists. Aborting tests."
     create_database(test_db_url)
     test_engine = create_engine(test_db_url)
+    # TODO Find a way to not to have to duplicate this code in tests and production
+    test_engine.execute('CREATE EXTENSION IF NOT EXISTS "pgcrypto";')
     Base.metadata.create_all(test_engine)
 
     # Run the tests
@@ -110,6 +136,25 @@ def test_user(test_db) -> models.User:
     )
     test_db.add(user)
     test_db.commit()
+    test_db.refresh(user)
+    return user
+
+
+@pytest.fixture
+def test_county_authorized_user(test_db) -> models.User:
+    """
+    Test county authorized user
+    """
+    user = models.User(
+        email="fakecountyauthorized@email.com",
+        hashed_password=get_password_hash(),
+        is_superuser=False,
+        is_active=True,
+        is_county_authorized=True
+    )
+    test_db.add(user)
+    test_db.commit()
+    test_db.refresh(user)
     return user
 
 
@@ -123,9 +168,11 @@ def test_superuser(test_db) -> models.User:
         email="fakeadmin@email.com",
         hashed_password=get_password_hash(),
         is_superuser=True,
+        is_active=True,
     )
     test_db.add(user)
     test_db.commit()
+    test_db.refresh(user)
     return user
 
 
@@ -135,7 +182,7 @@ def verify_password_mock(first: str, second: str) -> bool:
 
 @pytest.fixture
 def user_token_headers(
-    client: TestClient, test_user, test_password, monkeypatch
+        client: TestClient, test_user, test_password, monkeypatch
 ) -> t.Dict[str, str]:
     monkeypatch.setattr(security, "verify_password", verify_password_mock)
 
@@ -152,7 +199,7 @@ def user_token_headers(
 
 @pytest.fixture
 def superuser_token_headers(
-    client: TestClient, test_superuser, test_password, monkeypatch
+        client: TestClient, test_superuser, test_password, monkeypatch
 ) -> t.Dict[str, str]:
     monkeypatch.setattr(security, "verify_password", verify_password_mock)
 
@@ -165,3 +212,64 @@ def superuser_token_headers(
     a_token = tokens["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}
     return headers
+
+
+@pytest.fixture
+def county_authorized_token_headers(
+        client: TestClient, test_county_authorized_user, test_password, monkeypatch
+) -> t.Dict[str, str]:
+    login_data = {
+        "username": test_county_authorized_user.email,
+        "password": test_password,
+    }
+    r = client.post("/api/token", data=login_data)
+    tokens = r.json()
+    a_token = tokens["access_token"]
+    headers = {"Authorization": f"Bearer {a_token}"}
+    return headers
+
+
+@pytest.fixture
+def county_authorized_token_headers(
+        client: TestClient, test_county_authorized_user, test_password, monkeypatch
+) -> t.Dict[str, str]:
+    monkeypatch.setattr(security, "verify_password", verify_password_mock)
+    login_data = {
+        "username": test_county_authorized_user.email,
+        "password": test_county_authorized_user,
+    }
+    r = client.post("/api/token", data=login_data)
+    tokens = r.json()
+    a_token = tokens["access_token"]
+    headers = {"Authorization": f"Bearer {a_token}"}
+    return headers
+
+
+###############################################
+## Task API Tests ############################
+
+
+@pytest.fixture
+def test_celery_task_record(test_db) -> celery_models.CeleryTaskmeta:
+    task = celery_models.CeleryTaskmeta(
+        task_id=str(uuid4()),
+        status=TaskStates.SUCCESS,
+        result=pickle.dumps({'id': 1, 'type': TaskTypes.CCF})
+    )
+    test_db.add(task)
+    test_db.commit()
+    test_db.refresh(task)
+    return task
+
+
+@pytest.fixture
+def test_celery_task_record_no_result(test_db) -> celery_models.CeleryTaskmeta:
+    task = celery_models.CeleryTaskmeta(
+        task_id=str(uuid4()),
+        status=TaskStates.SUCCESS,
+        result=bytes()
+    )
+    test_db.add(task)
+    test_db.commit()
+    test_db.refresh(task)
+    return task

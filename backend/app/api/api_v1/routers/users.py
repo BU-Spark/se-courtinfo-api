@@ -1,15 +1,17 @@
-from fastapi import APIRouter, Request, Depends, Response, encoders
+from fastapi import APIRouter, Request, Depends, Response
 import typing as t
 
+from pydantic.types import UUID4
+
 from app.db.session import get_db
-from app.db.crud import (
+from app.crud.user_crud import (
     get_users,
     get_user,
     create_user,
     delete_user,
     edit_user,
 )
-from app.db.schemas import UserCreate, UserEdit, User, UserOut
+from app.schemas.user_schemas import UserCreate, UserEdit, User
 from app.core.auth import get_current_active_user, get_current_active_superuser
 
 users_router = r = APIRouter()
@@ -45,7 +47,7 @@ async def user_me(current_user=Depends(get_current_active_user)):
 )
 async def user_details(
     request: Request,
-    user_id: int,
+    user_id: UUID4,
     db=Depends(get_db),
     current_user=Depends(get_current_active_superuser),
 ):
@@ -77,7 +79,7 @@ async def user_create(
 )
 async def user_edit(
     request: Request,
-    user_id: int,
+    user_id: UUID4,
     user: UserEdit,
     db=Depends(get_db),
     current_user=Depends(get_current_active_superuser),
@@ -93,7 +95,7 @@ async def user_edit(
 )
 async def user_delete(
     request: Request,
-    user_id: int,
+    user_id: UUID4,
     db=Depends(get_db),
     current_user=Depends(get_current_active_superuser),
 ):

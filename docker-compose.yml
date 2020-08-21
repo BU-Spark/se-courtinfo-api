@@ -32,6 +32,15 @@ services:
       context: backend
       dockerfile: Dockerfile
     command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1 -b redis://redis:6379/0
+    volumes:
+      - ./backend:/app/:cached
+    environment:
+      PYTHONPATH: .
+      S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
+      S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
+      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres'
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
 
   flower:  
     image: mher/flower
@@ -56,6 +65,9 @@ services:
       HASH_KEY: "${HASH_KEY}"
       HASH_ALG: "${HASH_ALG}"
       JWT_Token_TTL: 120
+      S3_BUCKET_NAME: '${S3_BUCKET_NAME}'
+      S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
+      S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s

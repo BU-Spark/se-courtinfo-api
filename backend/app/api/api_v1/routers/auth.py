@@ -11,7 +11,7 @@ auth_router = r = APIRouter()
 
 @r.post("/token")
 async def login(
-    db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+        db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -26,6 +26,8 @@ async def login(
     )
     if user.is_superuser:
         permissions = "admin"
+    elif user.is_county_authorized:
+        permissions = "county"
     else:
         permissions = "user"
     access_token = security.create_access_token(
@@ -37,7 +39,7 @@ async def login(
 
 @r.post("/signup")
 async def signup(
-    db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+        db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ):
     user = sign_up_new_user(db, form_data.username, form_data.password)
     if not user:

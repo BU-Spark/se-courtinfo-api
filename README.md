@@ -1,16 +1,45 @@
 # Suffolk County District Attorney API
 
-## Features
+## Current Status 
+The API is currently setup with a single form as an example of how the rest will look. Basics tests 
+have been setup but are still being completed(code coverage is very low right now). 
 
-- **FastAPI** with Python 3.8
-- **React 16** with Typescript, Redux, and react-router
-- Postgres
-- SqlAlchemy with Alembic for migrations
-- Pytest for backend tests
-- Jest for frontend tests
-- Perttier/Eslint (with Airbnb style guide)
-- Docker compose for easier development
-- Nginx as a reverse proxy to allow backend and frontend on the same port
+The current test form, a criminal complaint form(called a ccf or cc in the code) features an upload route
+to upload the document and get a tracking ID to follow the progress of the processing. Records can be 
+retrieved from the `/records` endpoint -- along with URLs for uploaded images. All of these routes related
+to uploading, viewing and verifying documents are protected by special permission that must be explicitly
+granted by a superuser(even a superuser does not have access to these routes by default).
+
+### API Documentation
+
+The best way to learn about the API is to follow the `domain.name/api/docs` route and view the interactive
+swagger documentation for the routes. 
+
+### Frontend access
+
+You can access the frontend, namely the admin dashboard that enables you to edit user permissions via
+`domain.name/admin`. Superuser permissions are required to log into this dashboard.
+
+### Account types
+
+As mentioned in the current status section above, there are three types of users. A `user`, a `superuser` and 
+`county_authorized`. Anyone can signup and become a `user` but this does not afford them access to any routes.
+Meanwhile, a `superuser` has the authorization to edit details(including permissions) of all users. 
+`county_authorized` users are the only accounts that have access to routes that interact with the backend
+including viewing records, uploading new documents etc. 
+
+In summary: 
+
+- Anyone can signup and has access to only `/api/v1/users/me`
+- `county_authorized` users can access `/records` and `/uploads` routes.
+- `superuser` users can access `/users` routes which enable them to edit all other users.
+
+### Databases
+
+Both redis and postgres are still being run inside docker and will need to be migrated into AWS.
+
+
+
 
 ## Development
 
@@ -25,7 +54,7 @@ Starting the project with hot-reloading enabled
 docker-compose up -d
 ```
 
-To run the alembic migrations (for the users table):
+To run the alembic migrations for any database updates:
 
 ```bash
 docker-compose run --rm backend alembic upgrade head
