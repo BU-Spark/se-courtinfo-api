@@ -28,6 +28,9 @@ def upload_criminal_complaint(
     Upload a Criminal Complaint Form via HTTP form
     \n
     Upload size is limited to 25MB and type must be, pdf, jpg, or png
+
+    :return Returns a task_id which can be used to track the status of the submission, check for errors etc.
+    see the /tasks route for details on how to lookup the status using the returned ID.
     """
     path = handle_upload_file(file)
     string_path = str(path)
@@ -35,20 +38,3 @@ def upload_criminal_complaint(
     return {"job id": res.task_id}
 
 
-@u.post(
-    "/abf",
-    dependencies=[Depends(verify_uploaded_file_type)],
-    responses={400: {"description": "Returned when the uploaded file does not match the valid params"}},
-)
-def upload_arrest_booking_form(
-        file: UploadFile = File(...)
-):
-    """
-    Upload an arrest booking form
-    :param file: File being uploaded
-    :type file: formdata file
-    :return: Name and path of uploaded ilfe
-    :rtype: JSON
-    """
-    path = handle_upload_file(file)
-    return {"uploaded": path}

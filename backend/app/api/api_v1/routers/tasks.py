@@ -16,6 +16,10 @@ def task_details(
         task_id: UUID4,
         db=Depends(get_db),
 ):
+    """
+    Check the status of a task submitted via one of the upload routes.
+    :returns The current status of the task and possible results(could be nil)
+    """
     db_task = get_task_status(db, str(task_id))
     if db_task is None:
         raise HTTPException(status_code=404, detail="Task ID not found")

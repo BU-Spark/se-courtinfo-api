@@ -17,6 +17,9 @@ def search_ccf_by_name(
         limit: Optional[int] = Query(25, le=100, title="Number of results returned"),
         db=Depends(get_db)
 ):
+    """
+    Search for a criminal complaint form by name of defendant
+    """
     results = get_cc_by_name(db, name, limit)
     return results
 
