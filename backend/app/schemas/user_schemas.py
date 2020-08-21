@@ -12,7 +12,7 @@ class UserBase(BaseModel):
 
 
 class UserOut(UserBase):
-    pass
+    id: UUID4
 
 
 class UserCreate(UserBase):
