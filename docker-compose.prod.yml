@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  nginx:
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+  frontend:
+    environment:
+      - NODE_ENV=production
