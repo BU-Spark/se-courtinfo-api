@@ -18,12 +18,12 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data:cached
   worker:
-    command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1 -b redis://${REDIS_URL}
+    command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1 -b redis://${REDIS_URL_PORT_DB}
     volumes:
       - ./backend:/app/:cached
   flower:
     image: mher/flower
-    command: flower --broker=redis://${REDIS_URL} --port=5555
+    command: flower --broker=redis://${REDIS_URL_PORT_DB} --port=5555
     ports:
       - 5555:5555
     depends_on:

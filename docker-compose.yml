@@ -13,13 +13,13 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    command: celery worker -A app.tasks --loglevel=INFO -Q main-queue -c 1 -b redis://${REDIS_URL}
+    command: celery worker -A app.tasks --loglevel=INFO -Q main-queue -c 1 -b redis://${REDIS_URL_PORT_DB}
 
     environment:
       PYTHONPATH: .
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres'
+      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_URL_PORT}/${POSTGRES_DB_NAME}'
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
 
@@ -31,7 +31,7 @@ services:
     tty: true
     environment:
       PYTHONPATH: .
-      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres'
+      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_URL_PORT}/${POSTGRES_DB_NAME}'
       HASH_KEY: "${HASH_KEY}"
       HASH_ALG: "${HASH_ALG}"
       JWT_Token_TTL: 120
