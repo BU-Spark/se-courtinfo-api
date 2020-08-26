@@ -16,13 +16,3 @@ def get_redis_rate_limit_client() -> redis.Redis:
         )
     return rate_limit_redis_client
 
-
-def get_celery_redis_client() -> redis.Redis:
-    global celery_redis_client
-    if not celery_redis_client:
-        celery_redis_client = redis.Redis(
-            host='redis',
-            port='6379',
-            db='1'
-        )
-    return celery_redis_client
