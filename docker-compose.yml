@@ -13,7 +13,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    command: celery worker -A app.tasks --loglevel=INFO -Q main-queue -c 1 -b redis://${REDIS_URL_PORT_DB}
+    command: celery worker -A app.tasks --loglevel=INFO -Q main-queue -c 1 -b ${REDIS_DB_URL}
     environment:
       PYTHONPATH: .
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
@@ -21,7 +21,7 @@ services:
       DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_URL_PORT}/${POSTGRES_DB_NAME}'
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-      REDIS_URL_PORT_DB: '$REDIS_URL_PORT_DB}'
+      REDIS_DB_URL: '${REDIS_DB_URL}'
 
   backend:
     build:
@@ -38,7 +38,7 @@ services:
       S3_BUCKET_NAME: '${S3_BUCKET_NAME}'
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      REDIS_URL_PORT_DB: '$REDIS_URL_PORT_DB}'
+      REDIS_DB_URL: '${REDIS_DB_URL}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s
