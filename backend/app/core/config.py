@@ -1,9 +1,10 @@
 import os
 from typing import Final
 
-PROJECT_NAME = "Suffolk County District Attorney API"
-SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-API_V1_STR = "/api/v1"
+PROJECT_NAME: Final[str] = "Suffolk County District Attorney API"
+# Full Database URL, includes host, user, password, port and database name
+SQLALCHEMY_DATABASE_URI: Final[str] = os.getenv("DATABASE_URL")
+API_V1_STR: Final[str] = "/api/v1"
 # AWS S3 Access ID used for internal API operations
 S3_KEY_INTERNAL: Final[str] = os.getenv("S3_KEY_INTERNAL")
 # AWS S3 Secret for internal API operations

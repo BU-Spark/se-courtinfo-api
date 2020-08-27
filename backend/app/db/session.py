@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import expression
-from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.types import DateTime
 
 from app.core import config

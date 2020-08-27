@@ -22,6 +22,8 @@ services:
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
       REDIS_DB_URL: '${REDIS_DB_URL}'
+      POSTGRES_DB_NAME: '${POSTGRES_DB_NAME}'
+      POSTGRES_URL_PORT: '${POSTGRES_URL_PORT}'
 
   backend:
     build:
@@ -39,6 +41,8 @@ services:
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
       REDIS_DB_URL: '${REDIS_DB_URL}'
+      POSTGRES_DB_NAME: '${POSTGRES_DB_NAME}'
+      POSTGRES_URL_PORT: '${POSTGRES_URL_PORT}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s

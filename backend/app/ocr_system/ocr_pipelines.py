@@ -1,7 +1,6 @@
 import os
 
 from celery.exceptions import Ignore
-from fastapi import Depends
 from pydantic.types import UUID4
 
 from app.aws.s3_client import upload_file_to_s3, get_s3_client
