@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, \
-    LargeBinary, DateTime, Text, text
+    LargeBinary, DateTime, Text
 
 from app.db.base_class import Base
 
@@ -7,7 +7,7 @@ from app.db.base_class import Base
 class CeleryTaskmeta(Base):
     __tablename__ = 'celery_taskmeta'
 
-    id = Column(Integer, primary_key=True, server_default=text("nextval('celery_taskmeta_id_seq'::regclass)"))
+    id = Column(Integer, primary_key=True)
     task_id = Column(String(155), unique=True)
     status = Column(String(50))
     result = Column(LargeBinary)
@@ -24,7 +24,7 @@ class CeleryTaskmeta(Base):
 class CeleryTasksetmeta(Base):
     __tablename__ = 'celery_tasksetmeta'
 
-    id = Column(Integer, primary_key=True, server_default=text("nextval('celery_tasksetmeta_id_seq'::regclass)"))
+    id = Column(Integer, primary_key=True)
     taskset_id = Column(String(155), unique=True)
     result = Column(LargeBinary)
     date_done = Column(DateTime)
