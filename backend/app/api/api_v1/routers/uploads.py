@@ -1,14 +1,9 @@
-from time import sleep
-
 from fastapi import APIRouter, Depends, File, UploadFile
-from sqlalchemy.orm import Session
 
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
 from app.api.api_v1.uploads.uploads_utils import verify_uploaded_file_type
 from app.core import config
 from app.core.auth import get_current_user
-from app.core.celery_app import celery_app
-from app.db.session import get_db
 from app.schemas.user_schemas import User
 from app.tasks import handle_criminal_complaint_task
 
@@ -36,5 +31,3 @@ def upload_criminal_complaint(
     string_path = str(path)
     res = handle_criminal_complaint_task.apply_async(args=(string_path, current_user.id, "test", config.S3_BUCKET_NAME))
     return {"job id": res.task_id}
-
-
