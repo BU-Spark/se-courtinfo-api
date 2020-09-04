@@ -21,6 +21,7 @@ class CeleryTaskmeta(Base):
     queue = Column(String(155))
 
 
+
 class CeleryTasksetmeta(Base):
     __tablename__ = 'celery_tasksetmeta'
 
