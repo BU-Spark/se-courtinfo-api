@@ -16,7 +16,7 @@ from app.db.session import get_db
 from app.db.base_class import Base
 from app import models
 from app.main import app
-from app.models import celery_models
+from celery.backends.database import models as celery_models
 
 
 def get_test_db_url() -> str:
@@ -250,12 +250,11 @@ def county_authorized_token_headers(
 
 
 @pytest.fixture
-def test_celery_task_record(test_db) -> celery_models.CeleryTaskmeta:
-    task = celery_models.CeleryTaskmeta(
-        task_id=str(uuid4()),
-        status=TaskStates.SUCCESS,
-        result=pickle.dumps({'id': 1, 'type': TaskTypes.CCF})
-    )
+def test_celery_task_record(test_db) -> celery_models.Task:
+    task = celery_models.Task(
+        task_id=str(uuid4()))
+    task.status = TaskStates.SUCCESS
+    task.result = pickle.dumps({'id': 1, 'type': TaskTypes.CCF})
     test_db.add(task)
     test_db.commit()
     test_db.refresh(task)
@@ -263,12 +262,11 @@ def test_celery_task_record(test_db) -> celery_models.CeleryTaskmeta:
 
 
 @pytest.fixture
-def test_celery_task_record_no_result(test_db) -> celery_models.CeleryTaskmeta:
-    task = celery_models.CeleryTaskmeta(
-        task_id=str(uuid4()),
-        status=TaskStates.SUCCESS,
-        result=bytes()
-    )
+def test_celery_task_record_no_result(test_db) -> celery_models.Task:
+    task = celery_models.Task(
+        task_id=str(uuid4()))
+    task.status = TaskStates.SUCCESS
+    task.result = bytes()
     test_db.add(task)
     test_db.commit()
     test_db.refresh(task)

@@ -140,7 +140,7 @@ This command automatically applied the `docker-compose.override.yml` file on top
 To run the alembic migrations for any database updates:
 
 ```bash
-docker-compose run --rm backend alembic upgrade head
+docker-compose run --rm backend alembic upgrade head 
 ```
 
 And navigate to http://localhost:8000
