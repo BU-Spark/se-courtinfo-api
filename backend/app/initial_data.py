@@ -11,7 +11,7 @@ def init() -> None:
     create_user(
         db,
         UserCreate(
-            email="admin@scda-api.org",
+            email="admin@scdao-api.org",
             password="password",
             is_active=True,
             is_superuser=True,
