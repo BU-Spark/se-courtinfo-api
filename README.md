@@ -61,6 +61,7 @@ Travis CI runs on the `master` and `dev` branches and will push to CodeDeploy us
 CodeDeploy is configured via the `appspec.yml` file located in the root of the project. This specifies the scripts run for each lifecycle event along with the location of deployed files etc(currently set as `\srv\scdao-api`)
 
 > :warning: You will need to reconfigure this connection between Travis and CodeDeploy to whatever repository that will be utilized.
+
 > :warning: You will need to provide Travis with the correct secrets to push to CodeDeploy. Check the docs [here](https://docs.travis-ci.com/user/deployment/codedeploy/)
 
 ### EC2 Instances Required Configs and Notes
@@ -74,6 +75,7 @@ The EC2 instances are fairly vanilla in their configuration and do not require m
 - Port 80 and 443 open
 
 > :warning: EC2 instances should really live behind a strict Security Group(ie a firewall in AWS) that limits their traffic. For example, only ports 80, 443, and 22 are require as open input ports and similar restrictions can be placed on egress ports. Although remember that ports are stateful in security groups, if a connection is opened outbound that same host can perform an incoming connection on that same port.
+
 > :warning: EC2 instances should probably be configured with a basic firewall as well to ban repeated login attempts etc. Something such as fail2ban and ufw would make a good combination. 
 
 ### RDS and ElastiCache
@@ -135,7 +137,7 @@ so restarts with the new code. This can be done with the following command:
 
 `docker-compose worker restart`
 
-:warning: If you change code that is run on a celery worker you must restart the docker container! Otherwise 
+> :warning: If you change code that is run on a celery worker you must restart the docker container! Otherwise 
 your changes will not be applied.
 
 ### Quick Start
