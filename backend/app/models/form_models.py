@@ -5,7 +5,12 @@ from app.db.base_class import Base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
 
+
 class CriminalComplaint(Base):
+    """
+    This represents how CC are stored in the database, each field is a column with certain properties etc.
+    When a record is retrived from the database it will be of this type.
+    """
     __tablename__ = "criminal_complaints"
 
     cc_id = Column(Integer, primary_key=True, index=True)

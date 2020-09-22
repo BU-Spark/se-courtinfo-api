@@ -5,6 +5,11 @@ from app.celery_system.task_classes import TaskReturnValue
 from app.core.celery_app import celery_app
 from app.ocr_system.ocr_pipelines import pipeline_criminal_complaint_form
 
+"""
+This is where celery tasks live. These are tasks that run in an async fashion on workers
+outside of the main thread/computer of the API.
+"""
+
 
 @celery_app.task(acks_late=True)
 def example_task(word: str) -> str:

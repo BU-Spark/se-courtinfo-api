@@ -16,6 +16,10 @@ app = FastAPI(
     title=config.PROJECT_NAME, docs_url="/api/docs", openapi_url="/api"
 )
 
+'''
+This is where you can setup more routes, configure permissions for existing routes etc. 
+Keeping these items central to a single file helps with organization so try to maintain the structure.  
+'''
 
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next):

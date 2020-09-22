@@ -124,7 +124,19 @@ As the original images are stored in S3 private bucket if you desire to present 
 
 ## Development
 
-The only dependencies for this project should be docker and docker-compose.
+The only dependencies for this project should be docker and docker-compose. 
+
+In a development environment(locally or in AWS) hot reload is enabled for both the frontend 
+and backend. This means you don't need to restart contrainers to see your changes. The CLI should print
+status updates as the API reboots and applies your changes. 
+
+This is **not** the case for code that is run on celery workers. You must reboot the celery worker
+so restarts with the new code. This can be done with the following command:
+
+`docker-compose worker restart`
+
+:warning: If you change code that is run on a celery worker you must restart the docker container! Otherwise 
+your changes will not be applied.
 
 ### Quick Start
 
