@@ -157,12 +157,12 @@ To run the alembic migrations for any database updates:
 docker-compose run --rm backend alembic upgrade head 
 ```
 
-And navigate to http://localhost:8000
+And navigate to http://localhost:80
 
 _Note: If you see an Nginx error at first with a `502: Bad Gateway` page, you may have to wait for webpack to build the development server (the nginx container builds much more quickly)._
 
 Auto-generated docs will be at
-http://localhost:8000/api/docs
+http://localhost:80/api/docs
 
 ### Rebuilding containers:
 
