@@ -93,6 +93,12 @@ Dev:
 Prod: 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`
 
+If you are just running things locally you do not need to specify what docker-compose file should be utilized. This is because docker will use the default `docker-compose.yml` and combine it with `docker-compose.override.yml` producing a config that works for running things locally. 
+
+It's also important to create and accurately fill in the `.env` file that docker leverages to provide required environment variables to each container. There is a template provided and an example of a local config that should work but is not appropriate for anything where security would be a concern(So anything publicly accessible on the internet).
+
+The one caveat is that you will need an S3 bucket setup even to run things locally. This is because the API will upload the image uploaded via the API to S3 -- if this fails the entire operation also fails. 
+
 ## Routes Overview
 
 The HTTP routes(and the actions they perform) are all fairly self explanatory but I will expand on this a bit here just to clarify some aspects of the how the system is defined to 'flow'. 
@@ -126,7 +132,7 @@ As the original images are stored in S3 private bucket if you desire to present 
 
 ## Development
 
-The only dependencies for this project should be docker and docker-compose. 
+The only dependencies for this project should be docker and docker-compose and the environment variable file.
 
 In a development environment(locally or in AWS) hot reload is enabled for both the frontend 
 and backend. This means you don't need to restart contrainers to see your changes. The CLI should print
