@@ -26,8 +26,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run Tests
-        run: docker-compose run backend pytest
-        env:
-          HASH_KEY: super-secret
-          REDIS_DB_URL: redis://redis:6379/0
-          POSTGRES_URL: postgresql://postgres:password@postgres:5432/postgres
+        run: docker-compose run backend pytest -e .envLocalExample
