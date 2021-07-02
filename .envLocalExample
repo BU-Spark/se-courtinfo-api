@@ -1,10 +1,8 @@
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=password
 HASH_KEY=super_secret
-HASH_ALG=HS256
 S3_KEY_INTERNAL=
 S3_SECRET_INTERNAL=
 S3_BUCKET_NAME=
 REDIS_DB_URL=redis://redis:6379/0
-POSTGRES_URL_PORT=postgres:5432
-POSTGRES_DB_NAME=postgres
+POSTGRES_URL=postgresql://postgres:password@postgres:5432/postgres

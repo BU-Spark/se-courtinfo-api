@@ -23,3 +23,11 @@ POSTGRES_DB_NAME: Final[str] = os.getenv("POSTGRES_DB_NAME")
 S3_LINK_TTL: Final[int] = 120
 # Full Redis URL
 REDIS_DB_URL: Final[str] = os.getenv("REDIS_DB_URL")
+# Secret key for hasing passwords
+SECRET_KEY = os.getenv("HASH_KEY")
+# Algorithm that's used for hashing passwords
+ALGORITHM = "HS256"
+# S3 access token TTL
+S3_ACCESS_TOKEN_EXPIRE_MINUTES = 10
+# JWT TTL
+JWT_TOKEN_TTL = 120

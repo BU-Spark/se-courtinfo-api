@@ -17,13 +17,8 @@ services:
       PYTHONPATH: .
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_URL_PORT}/${POSTGRES_DB_NAME}'
-      POSTGRES_USER: '${POSTGRES_USER}'
-      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+      DATABASE_URL: '${POSTGRES_URL}'
       REDIS_DB_URL: '${REDIS_DB_URL}'
-      POSTGRES_DB_NAME: '${POSTGRES_DB_NAME}'
-      POSTGRES_URL_PORT: '${POSTGRES_URL_PORT}'
-
   backend:
     build:
       context: backend
@@ -32,16 +27,12 @@ services:
     tty: true
     environment:
       PYTHONPATH: .
-      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_URL_PORT}/${POSTGRES_DB_NAME}'
+      DATABASE_URL: '${POSTGRES_URL}'
       HASH_KEY: "${HASH_KEY}"
-      HASH_ALG: "${HASH_ALG}"
-      JWT_Token_TTL: 120
       S3_BUCKET_NAME: '${S3_BUCKET_NAME}'
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
       REDIS_DB_URL: '${REDIS_DB_URL}'
-      POSTGRES_DB_NAME: '${POSTGRES_DB_NAME}'
-      POSTGRES_URL_PORT: '${POSTGRES_URL_PORT}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s
