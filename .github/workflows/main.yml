@@ -26,4 +26,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run Tests
-        run: docker-compose run backend pytest -e .envLocalExample
+        run: docker-compose run backend pytest -e ./.envLocalExample
