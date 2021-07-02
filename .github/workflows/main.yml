@@ -30,7 +30,7 @@ jobs:
 
       # Setup DB
       - name: Build + Setup Containers
-        run: sh ./scripts/build.sh
+        run: sudo sh ./scripts/build.sh
 
       # Run tests
       - name: Run Tests
