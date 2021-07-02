@@ -154,6 +154,21 @@ provided called `.envLocalExample` that is meant to be a working version of the 
 
 You must set these values for things to compile and run. As mentioned in above sections S3 is still an external dependency so either be alright with
 that part of the API not working or setup an S3 resource and configure it correctly for use by the API
+### Variable Details
+```
+# This is the hash key used for hasing all passwords.
+HASH_KEY=
+# This is the S3 Key
+S3_KEY_INTERNAL=
+# S3 Secret
+S3_SECRET_INTERNAL=
+# S3 bucket
+S3_BUCKET_NAME=
+# Redis DB URL, full with port, url and database number
+REDIS_DB_URL=
+# Postgres DB url, must include: user, password, port and database name
+POSTGRES_URL=
+```
 
 ### Quick Start
 
