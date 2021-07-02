@@ -146,6 +146,15 @@ so restarts with the new code. This can be done with the following command:
 > :warning: If you change code that is run on a celery worker you must restart the docker container! Otherwise 
 your changes will not be applied.
 
+### Environment Variable Settings
+
+Environment variables are throughout the project for sensative or enviornment specific configuration details. They are loaded by docker from the .env file located in the 
+root of the project directory. A template is provided that lists all the values you must fill out. In addition, there is a "local template"
+provided called `.envLocalExample` that is meant to be a working version of the environment variable file ready for local development. 
+
+You must set these values for things to compile and run. As mentioned in above sections S3 is still an external dependency so either be alright with
+that part of the API not working or setup an S3 resource and configure it correctly for use by the API
+
 ### Quick Start
 
 Starting the project with hot-reloading enabled
