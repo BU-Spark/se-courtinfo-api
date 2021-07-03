@@ -22,7 +22,7 @@ jobs:
     env:
       HASH_KEY: super-secret
       REDIS_DB_URL: redis://redis:6379/0
-      POSTGRES_URL: postgresql://postgres:password@postgres:5432/postgres
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
