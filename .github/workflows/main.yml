@@ -19,10 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      HASH_KEY: super-secret
-      REDIS_DB_URL: redis://redis:6379/0
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -31,4 +27,8 @@ jobs:
       # Run tests
       - name: Run Tests
         run: docker-compose run backend pytest
+        env:
+          HASH_KEY: super-secret
+          REDIS_DB_URL: redis://redis:6379/0
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres
 
