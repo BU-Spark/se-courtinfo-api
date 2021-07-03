@@ -11,14 +11,6 @@ S3_KEY_INTERNAL: Final[str] = os.getenv("S3_KEY_INTERNAL")
 S3_SECRET_INTERNAL: Final[str] = os.getenv("S3_SECRET_INTERNAL")
 # AWS S3 Bucket Name
 S3_BUCKET_NAME: Final[str] = os.getenv("S3_BUCKET_NAME")
-# Postgres Username
-POSTGRES_USER_NAME: Final[str] = os.getenv("POSTGRES_USER")
-# Postgres Password
-POSTGRES_PASSWORD: Final[str] = os.getenv("POSTGRES_PASSWORD")
-# Postgres DB Host
-POSTGRES_DB_URL_PORT: Final[str] = os.getenv("POSTGRES_URL_PORT")
-# Postgres DB Name
-POSTGRES_DB_NAME: Final[str] = os.getenv("POSTGRES_DB_NAME")
 # AWS S3 Pre-signed URL Expiration Times in seconds
 S3_LINK_TTL: Final[int] = 120
 # Full Redis URL
