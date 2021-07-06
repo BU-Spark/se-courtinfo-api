@@ -29,6 +29,6 @@ jobs:
         run: docker-compose run -e .envLocalExample backend pytest
         env:
           HASH_KEY: super-secret
-          REDIS_DB_URL: redis://redis:6379/0
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres
+          REDIS_DB_URL: "redis://redis:6379/0"
+          DATABASE_URL: "postgresql://postgres:password@postgres:5432/postgres"
 
