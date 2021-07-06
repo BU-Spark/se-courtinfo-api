@@ -26,9 +26,5 @@ jobs:
 
       # Run tests
       - name: Run Tests
-        run: docker-compose run -e .envLocalExample backend pytest
-        env:
-          HASH_KEY: super-secret
-          REDIS_DB_URL: "redis://redis:6379/0"
-          DATABASE_URL: "postgresql://postgres:password@postgres:5432/postgres"
+        run: docker-compose --env-file ./.envLocalExample run backend pytest
 
