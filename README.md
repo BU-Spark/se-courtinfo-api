@@ -168,6 +168,8 @@ S3_BUCKET_NAME=
 REDIS_DB_URL=
 # Postgres DB url, must include: user, password, port and database name
 POSTGRES_URL=
+# Required by the postgres image. Should use the same password here as in POSTGRES_URL
+POSTGRES_PASSWORD=
 ```
 
 ### Quick Start
