@@ -4,3 +4,4 @@ S3_SECRET_INTERNAL=
 S3_BUCKET_NAME=
 REDIS_DB_URL=redis://redis:6379/0
 POSTGRES_URL=postgresql://postgres:password@postgres:5432/postgres
+POSTGRES_PASSWORD=password

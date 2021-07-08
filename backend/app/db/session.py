@@ -6,7 +6,7 @@ from sqlalchemy.types import DateTime
 
 from app.core import config
 
-engine = create_engine(config.SQLALCHEMY_DATABASE_URI, )
+engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 # Make sure that the extension is installed
 engine.execute('CREATE EXTENSION IF NOT EXISTS "pgcrypto";')
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
