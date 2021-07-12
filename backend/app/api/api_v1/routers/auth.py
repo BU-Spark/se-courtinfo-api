@@ -6,6 +6,8 @@ from app.db.session import get_db
 from app.core import security
 from app.core.auth import authenticate_user, sign_up_new_user
 
+from app.core import config
+
 auth_router = r = APIRouter()
 
 
@@ -22,7 +24,7 @@ async def login(
         )
 
     access_token_expires = timedelta(
-        minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES
+        minutes=config.JWT_TOKEN_TTL
     )
     if user.is_superuser:
         permissions = "admin"
@@ -50,7 +52,7 @@ async def signup(
         )
 
     access_token_expires = timedelta(
-        minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES
+        minutes=config.JWT_TOKEN_TTL
     )
     if user.is_superuser:
         permissions = "admin"
