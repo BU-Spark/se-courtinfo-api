@@ -20,6 +20,9 @@ services:
     command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1 -b ${REDIS_DB_URL}
     volumes:
       - ./backend:/app/:cached
+    depends_on:
+      - "postgres"
+      - "redis"
   flower:
     image: mher/flower
     command: flower --broker=${REDIS_DB_URL} --port=5555
