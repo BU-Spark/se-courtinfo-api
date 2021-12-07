@@ -141,7 +141,7 @@ status updates as the API reboots and applies your changes.
 This is **not** the case for code that is run on celery workers. You must reboot the celery worker
 so restarts with the new code. This can be done with the following command:
 
-`docker-compose worker restart`
+`docker-compose restart worker`
 
 > :warning: If you change code that is run on a celery worker you must restart the docker container! Otherwise 
 your changes will not be applied.
