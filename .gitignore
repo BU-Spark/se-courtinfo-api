@@ -16,3 +16,6 @@ docker-stack.yml
 *.sln
 *.sw*
 /backend/uploaded_files/
+
+#python venv
+/backend/env-scdao
