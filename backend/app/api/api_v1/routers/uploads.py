@@ -6,9 +6,9 @@ from app.core import config
 from app.core.auth import get_current_user
 from app.schemas.user_schemas import User
 from app.tasks import handle_criminal_complaint_task
+from backend.app.document_ai import process_ccf_document
 
 uploads_router = u = APIRouter()
-
 
 @u.post(
     "/ccf",
@@ -31,3 +31,23 @@ def upload_criminal_complaint(
     string_path = str(path)
     res = handle_criminal_complaint_task.apply_async(args=(string_path, current_user.id, "test", config.S3_BUCKET_NAME))
     return {"job id": res.task_id}
+
+@u.post(
+    "/ddi",
+    dependencies=[Depends(verify_uploaded_file_type)],
+    response={
+        400: {"description": "Returned when the uploaded file does not match the valid params"}
+    }
+)
+def upload_ddi_google(
+    file: UploadFile = File(...),
+):
+    """
+    Upload a Defendant Demographic Information Form via HTTP form and send to Google DocumentAI API
+    \n
+    Upload size is limited to 25MB and type must be, pdf, jpg, or png
+    """
+    path = handle_upload_file(file)
+    string_path = str(path)
+    ddi_id = process_ccf_document(string_path, file.content_type)
+    return {"id": ddi_id}
