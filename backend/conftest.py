@@ -10,7 +10,6 @@ from fastapi import Request
 import typing as t
 
 from app.core import config, security
-from app.core.security import user_over_rate_limit
 from app.db.session import get_db
 from app.db.base_class import Base
 from app import models
@@ -26,16 +25,6 @@ def mock_rate_limit(request: Request) -> None:
     Mocks the rate limit function. Just returns None always(ie does not throw an exception)
     """
     return None
-
-
-@pytest.fixture(scope='session', autouse=True)
-def replace_rate_limit():
-    """
-    Replace the rate limit dependency with a blank one that does
-    block requests
-    """
-    app.dependency_overrides[user_over_rate_limit] = mock_rate_limit
-
 
 @pytest.fixture
 def test_db():
