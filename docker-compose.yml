@@ -8,17 +8,6 @@ services:
     depends_on:
       - backend
       - frontend
-
-  worker:
-    build:
-      context: backend
-      dockerfile: Dockerfile
-    environment:
-      PYTHONPATH: .
-      S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
-      S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      DATABASE_URL: '${POSTGRES_URL}'
-      REDIS_DB_URL: '${REDIS_DB_URL}'
   backend:
     build:
       context: backend
