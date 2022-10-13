@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build and run containers
-docker-compose up -d
+docker-compose up -d --remove-orphans
 
 # Hack to wait for postgres container to be up before running alembic migrations
 sleep 5;

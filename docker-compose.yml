@@ -12,7 +12,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    command: python app/main.py
+    command: ./run.sh
     tty: true
     environment:
       PYTHONPATH: .

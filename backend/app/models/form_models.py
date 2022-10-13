@@ -43,6 +43,12 @@ class CriminalComplaint(Base):
     aws_bucket = Column(String)
 
 class DefendantDemoInfo(Base):
+    """
+    This represents how DDI are stored in the database, each field is a column with certain properties etc.
+    When a record is retrived from the database it will be of this type.
+    """
+    __tablename__ = "defendant_demographic_info"
+
     ddi_id = Column(Integer, primary_key=True, index=True)
     created_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
     updated_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))

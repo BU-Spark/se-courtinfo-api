@@ -2,10 +2,7 @@ from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
 from app.api.api_v1.uploads.uploads_utils import verify_uploaded_file_type
-from app.core import config
-from app.core.auth import get_current_user
-from app.schemas.user_schemas import User
-from backend.app.document_ai import process_ccf_document
+from app.document_ai.process import process_ddi_document
 
 uploads_router = u = APIRouter()
 
@@ -37,9 +34,6 @@ uploads_router = u = APIRouter()
 @u.post(
     "/ddi",
     dependencies=[Depends(verify_uploaded_file_type)],
-    response={
-        400: {"description": "Returned when the uploaded file does not match the valid params"}
-    }
 )
 def upload_ddi_google(
     file: UploadFile = File(...),
@@ -51,5 +45,5 @@ def upload_ddi_google(
     """
     path = handle_upload_file(file)
     string_path = str(path)
-    ddi_id = process_ccf_document(string_path, file.content_type)
+    ddi_id = process_ddi_document(string_path, file.content_type)
     return {"id": ddi_id}

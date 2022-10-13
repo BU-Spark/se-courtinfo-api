@@ -1,7 +1,7 @@
 from typing import Dict
-import google.cloud.documentai_v1beta3 as documentai
+from google.cloud import documentai
 
-from backend.app.schemas.ddi_schemas import DefendantDemoInfoBaseV1
+from app.schemas.ddi_schemas import DefendantDemoInfoBaseV1
 
 def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
     # Extract the first zip 

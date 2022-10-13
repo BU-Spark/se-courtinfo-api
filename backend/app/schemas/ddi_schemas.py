@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import List, Optional, Tuple, TypedDict
+from typing import Optional
+from typing_extensions import TypedDict
 from pydantic import UUID4, BaseModel, condecimal, conint
 
 class PastMilitaryServiceDDI(TypedDict):

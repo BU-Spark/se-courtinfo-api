@@ -1,12 +1,11 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Query, HTTPException
-from starlette import status
 
 from app.aws.s3_client import get_s3_client, create_presigned_url
 from app.crud.cc_crud import get_all_cc, get_cc, get_cc_by_name
 from app.db.session import get_db
-from app.schemas.cc_schemas import CriminalComplaintOut, CriminalComplaint, CriminalComplaintCreate
+from app.schemas.cc_schemas import CriminalComplaintOut 
 
 ccf_record_router = r = APIRouter()
 
