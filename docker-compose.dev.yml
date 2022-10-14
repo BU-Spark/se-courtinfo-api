@@ -8,11 +8,6 @@ services:
   frontend:
     environment:
       - NODE_ENV=production
-  worker:
-    command: celery worker -A app.tasks --loglevel=DEBUG -Q main-queue -c 1 -b ${REDIS_DB_URL}
-    volumes:
-      - ./backend:/app/:cached
-
   backend:
     volumes:
       - ./backend:/app/:cached

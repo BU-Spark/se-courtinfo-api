@@ -9,14 +9,11 @@ from fastapi.testclient import TestClient
 from fastapi import Request
 import typing as t
 
-from app.celery_system.task_classes import TaskStates, TaskTypes
 from app.core import config, security
-from app.core.security import user_over_rate_limit
 from app.db.session import get_db
 from app.db.base_class import Base
 from app import models
 from app.main import app
-from celery.backends.database import models as celery_models
 
 
 def get_test_db_url() -> str:
@@ -28,16 +25,6 @@ def mock_rate_limit(request: Request) -> None:
     Mocks the rate limit function. Just returns None always(ie does not throw an exception)
     """
     return None
-
-
-@pytest.fixture(scope='session', autouse=True)
-def replace_rate_limit():
-    """
-    Replace the rate limit dependency with a blank one that does
-    block requests
-    """
-    app.dependency_overrides[user_over_rate_limit] = mock_rate_limit
-
 
 @pytest.fixture
 def test_db():
@@ -243,31 +230,3 @@ def county_authorized_token_headers(
     a_token = tokens["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}
     return headers
-
-
-###############################################
-## Task API Tests ############################
-
-
-@pytest.fixture
-def test_celery_task_record(test_db) -> celery_models.Task:
-    task = celery_models.Task(
-        task_id=str(uuid4()))
-    task.status = TaskStates.SUCCESS
-    task.result = pickle.dumps({'id': 1, 'type': TaskTypes.CCF})
-    test_db.add(task)
-    test_db.commit()
-    test_db.refresh(task)
-    return task
-
-
-@pytest.fixture
-def test_celery_task_record_no_result(test_db) -> celery_models.Task:
-    task = celery_models.Task(
-        task_id=str(uuid4()))
-    task.status = TaskStates.SUCCESS
-    task.result = bytes()
-    test_db.add(task)
-    test_db.commit()
-    test_db.refresh(task)
-    return task
