@@ -1,6 +1,7 @@
 import os
 
 from google.cloud import documentai
+from backend.app.schemas.ddi_schemas import DefendantDemoInfoBase
 
 from dotenv import load_dotenv
 from app.crud.ddi_crud import create_ddi
@@ -12,7 +13,7 @@ def get_client() -> documentai.DocumentProcessorServiceClient:
     client_options = dict(api_endpoint=f"{API_LOCATION}-documentai.googleapis.com")
     return documentai.DocumentProcessorServiceClient(client_options=client_options)
 
-def process_ddi_document(file_path: str, mime_type: str) -> bool:
+def process_ddi_document(file_path: str, mime_type: str) -> dict:
     load_dotenv()
     client = get_client()
     with open(file_path, "rb") as file:
@@ -32,8 +33,11 @@ def process_ddi_document(file_path: str, mime_type: str) -> bool:
     
     # Extract the necessary information from the document returned from the API
     ddi_model = extract_ddi_v1(doc)
-    db = SessionLocal()
-    # Create ddi model to be stored in db
-    ddi = create_ddi(db, ddi_model)
-    return ddi.ddi_id
+    if(isinstance(ddi_model, DefendantDemoInfoBase)):
+        db = SessionLocal()
+        # Create ddi model to be stored in db
+        ddi = create_ddi(db, ddi_model)
+        return {'id' : ddi.ddi_id}
+    else:
+        return {'validationError' : ddi_model}
  

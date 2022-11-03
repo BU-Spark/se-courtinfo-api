@@ -45,5 +45,5 @@ def upload_ddi_google(
     """
     path = handle_upload_file(file)
     string_path = str(path)
-    ddi_id = process_ddi_document(string_path, file.content_type)
-    return {"id": ddi_id}
+    ddi = process_ddi_document(string_path, file.content_type)
+    return ddi

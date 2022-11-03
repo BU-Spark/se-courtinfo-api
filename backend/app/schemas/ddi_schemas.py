@@ -138,6 +138,7 @@ class DefendantDemoInfoBaseV1(BaseModel):
     rec_with_praxis: str
     dob: str
     charges: str
+    confidence: float
 
 class DefendantDemoInfoCreate(DefendantDemoInfoBaseV1):
     created_by: UUID4
