@@ -1,7 +1,7 @@
 import os
 
 from google.cloud import documentai
-from backend.app.schemas.ddi_schemas import DefendantDemoInfoBase
+from app.schemas.ddi_schemas import DefendantDemoInfoBase
 
 from dotenv import load_dotenv
 from app.crud.ddi_crud import create_ddi
