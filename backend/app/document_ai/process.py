@@ -1,7 +1,7 @@
 import os
 
 from google.cloud import documentai
-from app.schemas.ddi_schemas import DefendantDemoInfoBase
+from app.schemas.ddi_schemas import DefendantDemoInfoBaseV1
 
 from dotenv import load_dotenv
 from app.crud.ddi_crud import create_ddi
@@ -33,11 +33,11 @@ def process_ddi_document(file_path: str, mime_type: str) -> dict:
     
     # Extract the necessary information from the document returned from the API
     ddi_model = extract_ddi_v1(doc)
-    if(isinstance(ddi_model, DefendantDemoInfoBase)):
+    if(isinstance(ddi_model, DefendantDemoInfoBaseV1)):
         db = SessionLocal()
         # Create ddi model to be stored in db
-        ddi = create_ddi(db, ddi_model)
-        return {'id' : ddi.ddi_id}
+        process_result = create_ddi(db, ddi_model)
+        return {'id' : process_result.ddi_id}
     else:
-        return {'validationError' : ddi_model}
+        return ddi_model
  

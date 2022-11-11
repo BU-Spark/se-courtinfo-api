@@ -1,12 +1,17 @@
-from fastapi import APIRouter, Depends, File, UploadFile
-
+from app.schemas.ddi_schemas import DefendantDemoInfoBaseV1
+from app.db.session import get_db
+from fastapi import APIRouter, Depends, File, UploadFile, Request
+from pydantic.types import UUID4
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
 from app.api.api_v1.uploads.uploads_utils import verify_uploaded_file_type
 from app.document_ai.process import process_ddi_document
-
+from app.crud.ddi_crud import (
+    create_ddi,
+    get_ddi
+)
 uploads_router = u = APIRouter()
 
-
+from app.core.auth import get_current_active_superuser
 # Currently commented out since it uses the old OCR pipeline
 
 # @u.post(
@@ -47,3 +52,31 @@ def upload_ddi_google(
     string_path = str(path)
     ddi = process_ddi_document(string_path, file.content_type)
     return ddi
+
+@u.post("/ddi/modify")
+def modify_ddi_google(
+    request: Request,
+    model: DefendantDemoInfoBaseV1,
+    db=Depends(get_db),
+    current_user=Depends(get_current_active_superuser),
+):
+    ddi = create_ddi(db, model)
+    return ddi.ddi_id
+
+@u.get(
+    "/ddi/{ddi_id}", response_model=DefendantDemoInfoBaseV1, response_model_exclude_none=True,
+)
+async def get_ddi_details(
+    request: Request,
+    ddi_id: UUID4,
+    db=Depends(get_db),
+    current_user=Depends(get_current_active_superuser),
+):
+    """
+    Get any user details
+    """
+    ddi = get_ddi(db, ddi_id)
+    return ddi
+    # return encoders.jsonable_encoder(
+    #     ddi, skip_defaults=True, exclude_none=True,
+    # )

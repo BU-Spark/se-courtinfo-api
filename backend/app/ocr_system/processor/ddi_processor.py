@@ -55,7 +55,20 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
         )
         return result
     except ValidationError as e:
-        return e.json()
+        result = {
+            'zip' : int(zip_txt),
+            'race' : race_txt,
+            'sex' : sex_txt,
+            'recommendation' : rec_txt,
+            'primary_charge_category' : charge_category_txt,
+            'risk_level' : risk_level,
+            'rec_with_praxis' : rec_praxis_txt,
+            'charges' : charges_txt,
+            'dob' : dob_txt,
+            'confidence' : confidence_score,
+            'error' : e.json()
+        }
+        return result
 
 
 def extract_page_to_text(doc: documentai.Document) -> Dict[int, str]:
