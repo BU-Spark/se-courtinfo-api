@@ -43,7 +43,7 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
         elif "race:" in third_page[i]:
             race_txt = third_page[i][4:].strip()
 
-    # confidence_score = calculate_confidence(doc)
+    confidence_score = calculate_confidence(doc)
     try:
         zip_int = int(zip_txt)
         result = DefendantDemoInfoBaseV1(
@@ -56,7 +56,7 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
             rec_with_praxis=rec_praxis_txt,
             charges=charges_txt,
             dob=dob_txt,
-            # confidence=confidence_score
+            confidence=confidence_score
         )
         return result
     except ValidationError as e:
@@ -70,7 +70,7 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
             'rec_with_praxis' : rec_praxis_txt,
             'charges' : charges_txt,
             'dob' : dob_txt,
-            # 'confidence' : confidence_score,
+            'confidence' : confidence_score,
             'error' : e.json()
         }
         return result
@@ -85,7 +85,7 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
             'rec_with_praxis' : rec_praxis_txt,
             'charges' : charges_txt,
             'dob' : dob_txt,
-            # 'confidence' : confidence_score,
+            'confidence' : confidence_score,
             'error' : 'Zip should be a Integer'
         }
         return result
@@ -109,6 +109,6 @@ def extract_page_to_text(doc: documentai.Document) -> Dict[int, str]:
 def calculate_confidence(doc: documentai.Document):
     total_confidence = 0.
     for page in doc.pages:
-        conf_percent = page.imageQualityScores.qualityScore
+        conf_percent = page.image_quality_scores.quality_score
         total_confidence += conf_percent
     return total_confidence / len(doc.pages)

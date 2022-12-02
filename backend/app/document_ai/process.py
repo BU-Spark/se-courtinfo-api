@@ -21,9 +21,12 @@ def process_ddi_document(file_path: str, mime_type: str) -> dict:
     location = "us"
     project_id = os.getenv('GOOGLE_CLOUD_PROJECT_ID', '')
     processor_id = os.getenv('GOOGLE_CLOUD_PROCESSOR_ID', '')
+    processor_version_id = "pretrained-ocr-v1.1-2022-09-12"
     assert project_id != ''
     assert processor_id != ''
-    processor_name = f"projects/{project_id}/locations/{location}/processors/{processor_id}"
+    processor_name = client.processor_version_path(
+        project_id, location, processor_id, processor_version_id
+    )
     document = documentai.RawDocument(content=document_content, mime_type=mime_type)  #MIME_TYPE needs to be checked
     request = documentai.ProcessRequest(raw_document=document, name=processor_name)
     
@@ -40,4 +43,3 @@ def process_ddi_document(file_path: str, mime_type: str) -> dict:
         return {'id' : process_result.ddi_id}
     else:
         return ddi_model
- 

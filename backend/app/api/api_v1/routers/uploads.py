@@ -1,5 +1,6 @@
 from app.schemas.ddi_schemas import DefendantDemoInfoBaseV1
 from app.db.session import get_db
+from app.models import form_models
 from fastapi import APIRouter, Depends, File, UploadFile, Request
 from pydantic.types import UUID4
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
