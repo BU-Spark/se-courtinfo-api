@@ -53,7 +53,6 @@ def handle_upload_file(upload_file: UploadFile) -> Path:
     """
     file_name = uuid.uuid4().hex + Path(upload_file.filename).suffix
     file_path = Path(os.path.join(TEMP_FILE_PATH, file_name))
-    print(file_path)
     save_upload_file(upload_file, file_path)
 
     return file_path

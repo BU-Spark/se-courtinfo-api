@@ -12,7 +12,11 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
     zip_txt = text[index_zip_txt+4:index_zip_txt+10].lower().strip()
 
     pages_doc = extract_page_to_text(doc)
-    third_page = pages_doc[3].lower().split('\n')
+    third_page = []
+    if(len(pages_doc) < 3):
+        third_page = pages_doc[1].lower().split('\n')
+    else:
+        third_page = pages_doc[3].lower().split('\n')
     sex_txt = ""
     dob_txt = ""
     charges_txt = ""
@@ -39,10 +43,11 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
         elif "race:" in third_page[i]:
             race_txt = third_page[i][4:].strip()
 
-    confidence_score = calculate_confidence(doc)
+    # confidence_score = calculate_confidence(doc)
     try:
+        zip_int = int(zip_txt)
         result = DefendantDemoInfoBaseV1(
-            zip=int(zip_txt),
+            zip=zip_int,
             race=race_txt,
             sex=sex_txt,
             recommendation=rec_txt,
@@ -51,7 +56,7 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
             rec_with_praxis=rec_praxis_txt,
             charges=charges_txt,
             dob=dob_txt,
-            confidence=confidence_score
+            # confidence=confidence_score
         )
         return result
     except ValidationError as e:
@@ -65,8 +70,23 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
             'rec_with_praxis' : rec_praxis_txt,
             'charges' : charges_txt,
             'dob' : dob_txt,
-            'confidence' : confidence_score,
+            # 'confidence' : confidence_score,
             'error' : e.json()
+        }
+        return result
+    except ValueError as e:
+        result = {
+            'zip' : zip_txt,
+            'race' : race_txt,
+            'sex' : sex_txt,
+            'recommendation' : rec_txt,
+            'primary_charge_category' : charge_category_txt,
+            'risk_level' : risk_level,
+            'rec_with_praxis' : rec_praxis_txt,
+            'charges' : charges_txt,
+            'dob' : dob_txt,
+            # 'confidence' : confidence_score,
+            'error' : 'Zip should be a Integer'
         }
         return result
 
@@ -88,12 +108,7 @@ def extract_page_to_text(doc: documentai.Document) -> Dict[int, str]:
 
 def calculate_confidence(doc: documentai.Document):
     total_confidence = 0.
-    for entity in doc.entities:
-        conf_percent = entity.confidence
-        page_num = str(int(entity.page_anchor.page_refs[0].page) + 1)
-        print(f"\nPage {page_num} has a quality score of {conf_percent:.1%}")
+    for page in doc.pages:
+        conf_percent = page.imageQualityScores.qualityScore
         total_confidence += conf_percent
-        for prop in entity.properties:
-            conf_percent = f"{prop.confidence:.1%}"
-            print(f"    * {prop.type_} score of {conf_percent}")
-    return total_confidence / len(doc.entities)
+    return total_confidence / len(doc.pages)
