@@ -48,10 +48,10 @@ def extract_ddi_v1(doc: documentai.Document) -> DefendantDemoInfoBaseV1:
         zip_int = int(zip_txt)
         result = DefendantDemoInfoBaseV1(
             zip=zip_int,
-            race=race_txt,
-            sex=sex_txt,
-            recommendation=rec_txt,
-            primary_charge_category=charge_category_txt,
+            race=race_txt.lower(),
+            sex=sex_txt.lower(),
+            recommendation=rec_txt.lower(),
+            primary_charge_category=charge_category_txt.lower(),
             risk_level=risk_level,
             rec_with_praxis=rec_praxis_txt,
             charges=charges_txt,

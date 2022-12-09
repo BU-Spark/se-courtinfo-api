@@ -146,8 +146,8 @@ class DefendantDemoInfoCreate(DefendantDemoInfoBaseV1):
     aws_bucket: str
     raw_text: str
 
-class DefendantDemoInfoCreate(DefendantDemoInfoBaseV1):
-    created_by: UUID4
+class DefendantDemoInfoUpdate(DefendantDemoInfoBaseV1):
+    updated_by: UUID4
     img_key: Optional[str]
     aws_bucket: Optional[str]
     raw_text: Optional[str]
