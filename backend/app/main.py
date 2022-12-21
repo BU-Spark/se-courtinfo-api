@@ -3,12 +3,10 @@ from starlette.requests import Request
 import uvicorn
 
 from app.api.api_v1.routers.records.criminal_complaint_form_records import ccf_record_router
-from app.api.api_v1.routers.tasks import task_router
 from app.api.api_v1.routers.users import users_router
 from app.api.api_v1.routers.uploads import uploads_router
 from app.api.api_v1.routers.auth import auth_router
 from app.core import config
-from app.core.security import user_over_rate_limit
 from app.db.session import SessionLocal
 from app.core.auth import get_current_active_user, get_current_active_county_authorized
 
@@ -34,7 +32,7 @@ app.include_router(
     users_router,
     prefix="/api/v1",
     tags=["users"],
-    dependencies=[Depends(user_over_rate_limit), Depends(get_current_active_user)],
+    dependencies=[Depends(get_current_active_user)],
 )
 app.include_router(auth_router, prefix="/api", tags=["auth"])
 
@@ -46,20 +44,12 @@ app.include_router(
     dependencies=[Depends(get_current_active_county_authorized)]
 )
 
-# Task status router
-app.include_router(
-    task_router,
-    prefix="/api/v1",
-    tags=["tasks"],
-    dependencies=[Depends(get_current_active_county_authorized)]
-)
-
 # Uploads router
 app.include_router(
     uploads_router,
     tags=["uploads"],
     prefix="/api/v1/uploads",
-    dependencies=[Depends(get_current_active_county_authorized), Depends(user_over_rate_limit)]
+    dependencies=[Depends(get_current_active_county_authorized)]
 )
 
 if __name__ == "__main__":

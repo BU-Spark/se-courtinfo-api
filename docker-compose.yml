@@ -8,22 +8,11 @@ services:
     depends_on:
       - backend
       - frontend
-
-  worker:
-    build:
-      context: backend
-      dockerfile: Dockerfile
-    environment:
-      PYTHONPATH: .
-      S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
-      S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      DATABASE_URL: '${POSTGRES_URL}'
-      REDIS_DB_URL: '${REDIS_DB_URL}'
   backend:
     build:
       context: backend
       dockerfile: Dockerfile
-    command: python app/main.py
+    command: ./run.sh
     tty: true
     environment:
       PYTHONPATH: .
@@ -32,7 +21,9 @@ services:
       S3_BUCKET_NAME: '${S3_BUCKET_NAME}'
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      REDIS_DB_URL: '${REDIS_DB_URL}'
+      GOOGLE_APPLICATION_CREDENTIALS: '${GOOGLE_APPLICATION_CREDENTIALS}'
+      GOOGLE_CLOUD_PROJECT_ID: '${GOOGLE_CLOUD_PROJECT_ID}'
+      GOOGLE_CLOUD_PROCESSOR_ID: '${GOOGLE_CLOUD_PROCESSOR_ID}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s
