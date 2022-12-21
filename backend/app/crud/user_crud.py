@@ -33,6 +33,7 @@ def create_user(db: Session, user: user_schemas.UserCreate):
         email=user.email,
         is_active=user.is_active,
         is_superuser=user.is_superuser,
+        is_county_authorized=user.is_county_authorized,
         hashed_password=hashed_password,
     )
     db.add(db_user)
