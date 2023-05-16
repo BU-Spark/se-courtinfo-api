@@ -3,9 +3,7 @@ from fastapi import APIRouter, Depends, File, UploadFile
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
 from app.api.api_v1.uploads.uploads_utils import verify_uploaded_file_type
 from app.document_ai.process import process_ddi_document
-
 uploads_router = u = APIRouter()
-
 
 # Currently commented out since it uses the old OCR pipeline
 
@@ -45,5 +43,5 @@ def upload_ddi_google(
     """
     path = handle_upload_file(file)
     string_path = str(path)
-    ddi_id = process_ddi_document(string_path, file.content_type)
-    return {"id": ddi_id}
+    ddi = process_ddi_document(string_path, file.content_type)
+    return ddi

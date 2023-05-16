@@ -36,7 +36,7 @@ def save_upload_file(upload_file: UploadFile, destination: Path) -> None:
     :rtype: None
     """
     try:
-        with destination.open("wb") as buffer:
+        with destination.open("ab") as buffer:
             shutil.copyfileobj(upload_file.file, buffer, WRITE_BUFFER_SIZE)
     finally:
         upload_file.file.close()

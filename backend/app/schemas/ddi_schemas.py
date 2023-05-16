@@ -138,9 +138,16 @@ class DefendantDemoInfoBaseV1(BaseModel):
     rec_with_praxis: str
     dob: str
     charges: str
+    confidence: float
 
 class DefendantDemoInfoCreate(DefendantDemoInfoBaseV1):
     created_by: UUID4
     img_key: str
     aws_bucket: str
     raw_text: str
+
+class DefendantDemoInfoUpdate(DefendantDemoInfoBaseV1):
+    updated_by: UUID4
+    img_key: Optional[str]
+    aws_bucket: Optional[str]
+    raw_text: Optional[str]
