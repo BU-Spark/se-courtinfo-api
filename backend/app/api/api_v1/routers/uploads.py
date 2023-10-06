@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
@@ -31,6 +33,10 @@ uploads_router = u = APIRouter()
 #     res = handle_criminal_complaint_task.apply_async(args=(string_path, current_user.id, "test", config.S3_BUCKET_NAME))
 #     return {"job id": res.task_id}
 
+# @u.post("/upload", dependencies=[Depends(verify_uploaded_file_type)])
+# def upload_files(
+#
+# )
 @u.post(
     "/ddi",
     dependencies=[Depends(verify_uploaded_file_type)],
@@ -47,3 +53,6 @@ def upload_ddi_google(
     string_path = str(path)
     ddi_id = process_ddi_document(string_path, file.content_type)
     return {"id": ddi_id}
+
+@u.post("/upload")
+def upload_form(files: List[str], )
