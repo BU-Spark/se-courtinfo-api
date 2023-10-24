@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.api.api_v1.uploads.uploads_utils import handle_upload_file
