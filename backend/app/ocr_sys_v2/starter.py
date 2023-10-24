@@ -57,3 +57,7 @@ if read_result.status == OperationStatusCodes.succeeded:
             print(line.text)
             print(line.bounding_box)
 print()
+
+
+def read_text(text):
+    return text
