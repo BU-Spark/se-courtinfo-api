@@ -7,7 +7,7 @@ services:
       - 443:443
     depends_on:
       - backend
-      - frontend
+#      - frontend
   backend:
     build:
       context: backend
@@ -21,19 +21,19 @@ services:
       S3_BUCKET_NAME: '${S3_BUCKET_NAME}'
       S3_KEY_INTERNAL: '${S3_KEY_INTERNAL}'
       S3_SECRET_INTERNAL: '${S3_SECRET_INTERNAL}'
-      GOOGLE_APPLICATION_CREDENTIALS: '${GOOGLE_APPLICATION_CREDENTIALS}'
-      GOOGLE_CLOUD_PROJECT_ID: '${GOOGLE_CLOUD_PROJECT_ID}'
-      GOOGLE_CLOUD_PROCESSOR_ID: '${GOOGLE_CLOUD_PROCESSOR_ID}'
+#      GOOGLE_APPLICATION_CREDENTIALS: '${GOOGLE_APPLICATION_CREDENTIALS}'
+#      GOOGLE_CLOUD_PROJECT_ID: '${GOOGLE_CLOUD_PROJECT_ID}'
+#      GOOGLE_CLOUD_PROCESSOR_ID: '${GOOGLE_CLOUD_PROCESSOR_ID}'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://backend:8888/api"]
       interval: 15s
       timeout: 30s
       retries: 5
 
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    stdin_open: true
+#  frontend:
+#    build:
+#      context: frontend
+#      dockerfile: Dockerfile
+#    stdin_open: true
 
 
