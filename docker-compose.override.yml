@@ -17,12 +17,12 @@ services:
       - ./backend:/app/:cached
     depends_on:
       - "postgres"
-  frontend:
-    environment:
-      NODE_ENV: 'production'
-    volumes:
-      - './frontend:/app:cached'
-      - './frontend/node_modules:/app/node_modules:cached'
+#  frontend:
+#    environment:
+#      NODE_ENV: 'production'
+#    volumes:
+#      - './frontend:/app:cached'
+#      - './frontend/node_modules:/app/node_modules:cached'
 
 volumes:
   db-data:
