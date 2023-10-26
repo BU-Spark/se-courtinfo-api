@@ -86,11 +86,59 @@ def cc_schema_fill(text: str) -> CriminalComplaintBase:
     This function takes in the text from the image and fills in the appropriate fields
     for the CriminalComplaintBase schema.
     '''
-
-    pass
+    docket = get_docket(text)
+    number_of_counts = get_number_of_counts(text)
+    defen_name = get_defen_name(text)
+    defen_adr = get_defen_adr(text)
+    defen_DOB = get_defen_DOB(text)
+    court_name_adr = get_court_name_adr(text)
+    complaint_issued_date = get_complaint_issued_date(text)
+    offense_date = get_offense_date(text)
+    arrest_date = get_arrest_date(text)
+    next_event_date = get_next_event_date(text)
+    next_event_type = get_next_event_type(text)
+    next_event_room_session = get_next_event_room_session(text)
+    offense_city = get_offense_city(text)
+    offense_adr = get_offense_adr(text)
+    police_dept = get_police_dept(text)
+    police_incident_num = get_police_incident_num(text)
+    OBTN = get_OBTN(text)
+    PCF_number = get_PCF_number(text)
+    defen_xref_id = get_defen_xref_id(text)
+    offense_codes = get_offense_codes(text)
+    return
+    #return CriminalComplaintBase(docket=docket, ...)
 
 def ddi_schema_fill(text: str) -> DefendantDemographicInfoBase:
-    pass
+    '''
+    A Defendant Demographic Info Form is made up of the following fields:
+    first_name: str_normalized
+    last_name: str_normalized
+    date_of_birth: date
+    zip_code: constr(strip_whitespace=True, to_lower=True, min_length=5, max_length=5)
+    charges: str_normalized
+    race: Literal["white", "black", "asian", "other", "unknown"]
+    sex: Literal["male", "female"]
+    recommendation: Literal["detain", "release without supervision", "release without supervision"]
+    primary_charge_category: str_normalized
+    risk_level: conint(ge=1, le=6)
+    praxis: Literal[
+        "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]
+    This function takes in the text from the image and fills in the appropriate fields.
+    '''
+    first_name = get_first_name(text)
+    last_name = get_last_name(text)
+    date_of_birth = get_date_of_birth(text)
+    zip_code = get_zip_code(text)
+    charges = get_charges(text)
+    race = get_race(text)
+    sex = get_sex(text)
+    recommendation = get_recommendation(text)
+    primary_charge_category = get_primary_charge_category(text)
+    risk_level = get_risk_level(text)
+    praxis = get_praxis(text)
+    return
+    #return DefendantDemographicInfoBase(first_name=first_name, ...)
 
 #def fit_schema(text: str):
 #    if text
