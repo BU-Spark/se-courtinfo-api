@@ -25,7 +25,6 @@ def read_text(image: str, computervision_client: ComputerVisionClient) -> Option
             break
         time.sleep(1)
 
-    # Print the detected text, line by line
     #edit this
     if read_result.status == OperationStatusCodes.succeeded:
         return read_result
