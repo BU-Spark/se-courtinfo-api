@@ -143,7 +143,7 @@ def ddi_schema_fill(text: str) -> DefendantDemographicInfoBase:
 #def fit_schema(text: str):
 #    if text
 
-
+print(process_doc("./test_images/test_ddi.jpg"))
 
 
 

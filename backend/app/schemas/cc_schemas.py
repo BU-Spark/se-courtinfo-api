@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
-from pydantic import BaseModel, UUID4
+from pydantic import BaseModel, UUID4, validator
 
 
 class CriminalComplaintBase(BaseModel):
@@ -8,12 +8,12 @@ class CriminalComplaintBase(BaseModel):
     number_of_counts: Optional[int]
     defen_name: Optional[str]
     defen_adr: Optional[str]
-    defen_DOB: Optional[str]
+    defen_DOB: date
     court_name_adr: Optional[str]
-    complaint_issued_date: Optional[str]
-    offense_date: Optional[str]
-    arrest_date: Optional[str]
-    next_event_date: Optional[str]
+    complaint_issued_date: date
+    offense_date: date
+    arrest_date: date
+    next_event_date: date
     next_event_type: Optional[str]
     next_event_room_session: Optional[str]
     offense_city: Optional[str]
@@ -25,6 +25,15 @@ class CriminalComplaintBase(BaseModel):
     defen_xref_id: Optional[str]
     offense_codes: Optional[str]
     raw_text: Optional[str]
+
+    @validator('defen_DOB','complaint_issued_date', 'offense_date', 'arrest_date', 'next_event_date')
+    def parse_birthdate(cls, value: str):
+        return datetime.strptime(
+            value.strip(),
+            "%m/%d/%Y"
+        ).date()
+    
+    
 
 class CriminalComplaintCreate(CriminalComplaintBase):
     created_by: UUID4
