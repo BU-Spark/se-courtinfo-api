@@ -240,3 +240,4 @@ class DefendantDemographicInfo(DefendantDemographicInfoBase):
 class DefendantDemographicInfoUpdate(DefendantDemographicInfoBase):
     id: int
     updated_by: UUID4
+
