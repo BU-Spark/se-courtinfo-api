@@ -53,9 +53,6 @@ def cc_schema_fill(text: str) -> CriminalComplaintBase:
     complaint_issued_date: Optional[str]
     offense_date: Optional[str]
     arrest_date: Optional[str]
-    next_event_date: Optional[str]
-    next_event_type: Optional[str]
-    next_event_room_session: Optional[str]
     offense_city: Optional[str]
     offense_adr: Optional[str]
     police_dept: Optional[str]
@@ -76,9 +73,6 @@ def cc_schema_fill(text: str) -> CriminalComplaintBase:
     complaint_issued_date = get_complaint_issued_date(text)
     offense_date = get_offense_date(text)
     arrest_date = get_arrest_date(text)
-    next_event_date = get_next_event_date(text)
-    next_event_type = get_next_event_type(text)
-    next_event_room_session = get_next_event_room_session(text)
     offense_city = get_offense_city(text)
     offense_adr = get_offense_adr(text)
     police_dept = get_police_dept(text)
