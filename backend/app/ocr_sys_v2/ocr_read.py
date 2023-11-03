@@ -23,6 +23,7 @@ load_dotenv()
 
 #NEEDS TO BE EDITED
 def read_text(image: str, computervision_client: ComputerVisionClient) -> Optional[str]:
+    #CURRENT ISSUE -> UNABLE TO AUTHENTICATE FOLLOWING LINE
     read_response = computervision_client.read(image,  raw=True)
 
     # Get the operation location (URL with an ID at the end) from the response
@@ -54,6 +55,7 @@ def process_doc(image: str) -> Optional[str]:
     subscription_key = os.environ.get("VISION_KEY")
     endpoint = os.environ.get("VISION_ENDPOINT")
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+    print(computervision_client)
     return read_text(image, computervision_client)
 
 
