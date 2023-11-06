@@ -15,6 +15,7 @@ import os
 from PIL import Image
 import sys
 import time
+import json
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -27,26 +28,22 @@ def read_text(image: str, endpoint: str, api_key: str) -> Optional[str]:
         poller = document_client.begin_analyze_document("prebuilt-document", document=image_stream)
         result = poller.result()
 
-    # Process the result to extract text
-    extracted_text = ""
-    print(result)
-    # for page in result:
-    #     for line in page.lines:
-    #         extracted_text += line.text + "\n"
+    result_json = result.to_dict()
+
+    # Save the result to a JSON file
+    with open('backend/app/ocr_sys_v2/test_output.json', "w") as json_file:
+        json.dump(result_json, json_file, indent=4)
     
-    return extracted_text
+    return result
 
-def parse_doc(image: str, endpoint: str, api_key: str) -> Optional[str]:
-    extracted_text = read_text(image, endpoint, api_key)
-    return extracted_text
 
-# Example usage
 api_key = os.environ.get("VISION_KEY")
 endpoint = os.environ.get("VISION_ENDPOINT")
 image_path = os.path.abspath('backend/app/ocr_sys_v2/test_images/test_ddi.jpg')
-print(parse_doc(image_path, endpoint, api_key))
+read_text(image_path, endpoint, api_key)
         
 '''
+EXAMPLE RESULT
 AnalyzeResult(api_version=2023-07-31, model_id=prebuilt-document, content=Page 1 of 2
 Defendant Demographic Information
 Lemy FAKE RECORD Stringbean - PTCC Case #CA10592016123003115700
