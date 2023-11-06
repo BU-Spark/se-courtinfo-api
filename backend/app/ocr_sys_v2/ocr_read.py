@@ -20,7 +20,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 #NEEDS TO BE EDITED
-def read_text(image: str, endpoint: str, api_key: str) -> Optional[str]:
+def read_text(image: str) -> Optional[str]:
+    api_key = os.environ.get("VISION_KEY")
+    endpoint = os.environ.get("VISION_ENDPOINT")
     credential = AzureKeyCredential(api_key)
     document_client = DocumentAnalysisClient(endpoint, credential)
 
@@ -36,11 +38,8 @@ def read_text(image: str, endpoint: str, api_key: str) -> Optional[str]:
     
     return result
 
-
-api_key = os.environ.get("VISION_KEY")
-endpoint = os.environ.get("VISION_ENDPOINT")
 image_path = os.path.abspath('backend/app/ocr_sys_v2/test_images/test_ddi.jpg')
-read_text(image_path, endpoint, api_key)
+read_text(image_path)
         
 '''
 EXAMPLE RESULT

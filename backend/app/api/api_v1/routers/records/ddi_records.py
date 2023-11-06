@@ -3,7 +3,10 @@ from fastapi import APIRouter, Depends, Query
 from pydantic.types import UUID4
 from app.db.session import get_db
 from app.core.auth import get_current_active_superuser
+import json
+import os
 
+from app.ocr_sys_v2.ocr_read import read_text
 
 ddi_record_router = d = APIRouter()
 
@@ -54,3 +57,17 @@ ddi_record_router = d = APIRouter()
 #     ddi = update_ddi(db, current_user.id, model)
 #     return ddi.ddi_id
 
+#NEEDS TO BE EDITED 
+@d.post("/ddi/analyze_doc")
+async def analyze_document(file):
+    # Save the uploaded file to a temporary location
+    with open("temp_image.jpg", "wb") as image_file:
+        image_file.write(file.file.read())
+
+    # Call the document analysis script
+    result = read_text("temp_image.jpg")
+
+    # Delete the temporary image file
+    os.remove("temp_image.jpg")
+    #return should return status?
+    return result
