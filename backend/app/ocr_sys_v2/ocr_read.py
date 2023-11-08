@@ -17,6 +17,7 @@ import sys
 import time
 import json
 from dotenv import load_dotenv
+#from app.ocr_sys_v2.ddi_schemify import *
 load_dotenv()
 
 #NEEDS TO BE EDITED
@@ -36,7 +37,17 @@ def read_text(image: str) -> Optional[str]:
     with open('backend/app/ocr_sys_v2/test_output.json', "w") as json_file:
         json.dump(result_json, json_file, indent=4)
     
-    return result
+    #dummy response
+    response_data = {"message": "Success!"}
+    response = json.dumps(response_data).encode('utf-8')
+    print(response)
+
+    return response
+
+    # call ddi_schemify
+    #return status
+    # return result_json
+
 
 image_path = os.path.abspath('backend/app/ocr_sys_v2/test_images/test_ddi.jpg')
 read_text(image_path)
