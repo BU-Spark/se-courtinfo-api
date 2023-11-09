@@ -7,6 +7,8 @@ import json
 import os
 
 from app.ocr_sys_v2.ocr_read import read_text
+from app.schemas.ddi_schemas import DefendantDemographicInfoBase
+from app.ocr_sys_v2.ddi_schemify import *
 
 ddi_record_router = d = APIRouter()
 
@@ -57,9 +59,9 @@ ddi_record_router = d = APIRouter()
 #     ddi = update_ddi(db, current_user.id, model)
 #     return ddi.ddi_id
 
-#NEEDS TO BE EDITED 
-@d.post("/ddi/analyze_doc")
-async def analyze_document(file):
+#NEEDS TO BE EDITED (template)
+@d.post("/ddi/upload_to_ocr")
+async def upload_to_ocr(file):
     # Save the uploaded file to a temporary location
     with open("temp_image.jpg", "wb") as image_file:
         image_file.write(file.file.read())
@@ -71,3 +73,11 @@ async def analyze_document(file):
     os.remove("temp_image.jpg")
     #return should return status?
     return result
+
+@d.post("/ddi/create")
+async def create_ddi(model: DefendantDemographicInfoBase):
+    ddi_filled = ddi_schema_fill()
+    response_data = {"message": "Success!"}
+    response = json.dumps(response_data).encode('utf-8')
+    return response
+    

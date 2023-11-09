@@ -82,7 +82,7 @@ def get_age(text: str) -> Optional[str]:
         return None
       
 
-def ddi_schema_fill(text: str):
+def ddi_schema_fill():
     '''
     A Defendant Demographic Info Form is made up of the following fields:
     first_name: str_normalized
@@ -99,6 +99,10 @@ def ddi_schema_fill(text: str):
         "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]
     This function takes in the text from the image and fills in the appropriate fields.
     '''
+    with open('backend/app/ocr_sys_v2/test_output.json') as json_file:
+        text = json.load(json_file)
+
+    
     page1 = text['pages'][0]['lines']
     #page2 = text['pages'][1]['lines']
     first_name = get_first_name(page1[4]['content'])
@@ -123,8 +127,3 @@ def ddi_schema_fill(text: str):
     #                                     risk_level=risk_level, praxis=praxis)
     return text
 #TESTS (THIS IS ASSUMING THAT OCR PROCESSING HAS ALREADY BEEN DONE CORRECTLY)
-
-with open('backend/app/ocr_sys_v2/test_output.json') as json_file:
-        text = json.load(json_file)
-
-ddi_schema_fill(text)
