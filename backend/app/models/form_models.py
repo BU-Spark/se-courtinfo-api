@@ -73,7 +73,7 @@ class DefendantDemoInfo(Base):
     When a record is retrived from the database it will be of this type.
     """
     __tablename__ = "defendant_demographic_info"
-
+    ddi_id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
     date_of_birth = Column(Date)
@@ -98,8 +98,6 @@ class FormType(Base):
     name = Column(UUID(as_uuid=True), ForeignKey('cc.id, ddi.id'))
     form_type_description = Column(String)
     table_name = Column(String)
-    table_id = Column(UUID(as_uuid=True), ForeignKey(
-        'criminal_complaints.id, defendant_demographic_info.id'))
 
 
 class Upload(Base):
@@ -114,7 +112,6 @@ class Upload(Base):
 
 class Photo(Base):
     id = Column(Integer, primary_key=True, index=True)
-    telephone_number = Column(String)
     Image = Column(LargeBinary)
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
     updated_at = Column(DateTime(timezone=True), onupdate=utcnow())
