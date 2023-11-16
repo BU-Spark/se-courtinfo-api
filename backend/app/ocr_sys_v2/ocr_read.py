@@ -17,7 +17,7 @@ import sys
 import time
 import json
 from dotenv import load_dotenv
-#from app.ocr_sys_v2.ddi_schemify import *
+from app.ocr_sys_v2.ddi_schemify import ddi_schema_fill
 load_dotenv()
 
 #NEEDS TO BE EDITED
@@ -37,7 +37,14 @@ def read_text(image: str) -> Optional[str]:
         json.dump(result_json, json_file, indent=4)
     
     #dummy response
-    response_data = {"message": "Success!"}
+    #call schemify
+    response = ddi_schema_fill()
+    
+    if response == False:
+        response_data = {"message": "Error!"}
+    else:
+        response_data = {"message": "Success!"}
+    
     response = json.dumps(response_data).encode('utf-8')
     print(response)
 

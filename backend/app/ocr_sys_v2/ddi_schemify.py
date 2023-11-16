@@ -56,9 +56,13 @@ def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
         and recommendation and primary_charge_category and risk_level and praxis):
         return False
     else:
-        return DefendantDemographicInfoCreate(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth,
+        #add to database?
+        # dummy method
+        schema = DefendantDemographicInfoCreate(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth,
                                             zip_code=zip_code, charges=charges, race=race, sex=sex, 
                                             recommendation=recommendation, primary_charge_category=primary_charge_category,
                                             risk_level=risk_level, praxis=praxis)
+        #db_add(schema)
+        return True
 #TESTS (THIS IS ASSUMING THAT OCR PROCESSING HAS ALREADY BEEN DONE CORRECTLY)
 ddi_schema_fill()
