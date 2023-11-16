@@ -12,77 +12,12 @@ import os
 import sys
 import json
 
-# from app.ocr_sys_v2.ocr_read import *
-# from app.schemas.user_schemas import *
-# from app.schemas.ddi_schemas import *
-def get_first_name(text: str) -> Optional[str]:
-    '''
-    This function takes in the text from the image and returns the first name.
-    '''
-    name = re.search(r'Name:\s*(.+)', text)
-    first_name = name.group(1).split(' ')[0]
-    if name:
-        return first_name
-    else:
-        return None
-
-def get_last_name(text: str) -> Optional[str]:
-    '''
-    This function takes in the text from the image and returns the last name.
-    '''
-    name = re.search(r'Name:\s*(.+)', text)
-    last_name = name.group(1).split(' ')[1]
-    if name:
-        return last_name
-    else:
-        return None
-    
-def get_dob(text: str) -> Optional[str]:
-    '''
-    This function takes in the text from the image and returns the date of birth.
-    '''
-    dob = re.search(r'DOB:\s*(.+)', text)
-    if dob:
-        return dob.group(1)
-    else:
-        return None
-
-def get_ssn(text: str) -> Optional[str]:
-    '''
-    This function takes in the text from the image and returns the social security number.
-    '''
-    ssn = re.search(r'SSN:\s*(.+)', text)
-    if ssn:
-        return ssn.group(1)
-    else:
-        return None
-    
-def get_sex(text: str) -> Optional[str]:
-    sex = re.search(r'Sex:\s*(.+)', text)
-    if sex:
-        return sex.group(1).split(' ')[0][0]
-    else:
-        return None
-
-def get_race(text: str) -> Optional[str]:
-    race = re.search(r'Race:\s*(.+)', text)
-    if race:
-        return race.group(1)
-    else:
-        None
-    
-def get_age(text: str) -> Optional[str]:
-    '''
-    This function takes in the text from the image and returns the age.
-    '''
-    age = re.search(r'Age:\s*(.+)', text)
-    if age:
-        return age.group(1).split(' ')[0]
-    else:
-        return None
+from app.ocr_sys_v2.ocr_read import *
+from app.schemas.user_schemas import *
+from app.schemas.ddi_schemas import *
       
 
-def ddi_schema_fill():
+def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
     '''
     A Defendant Demographic Info Form is made up of the following fields:
     first_name: str_normalized
@@ -102,28 +37,28 @@ def ddi_schema_fill():
     with open('backend/app/ocr_sys_v2/test_output.json') as json_file:
         text = json.load(json_file)
 
-    
-    page1 = text['pages'][0]['lines']
-    #page2 = text['pages'][1]['lines']
-    first_name = get_first_name(page1[4]['content'])
-    last_name = get_last_name(page1[4]['content'])
-    date_of_birth = get_dob(page1[5]['content'])
-    ssn = get_ssn(page1[6]['content'])
-    sex = get_sex(page1[7]['content'])
-    race = get_race(page1[7]['content'])
-    age = get_age(page1[8]['content'])
-    
+    fields = text['documents'][0]['fields']
 
-    print(first_name)
-    print(last_name)
-    print(date_of_birth)
-    print(ssn)
-    print(sex)
-    print(race)
-    print(age)
-    # return DefendantDemographicInfoBase(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, ssn = ssn
-    #                                     zip_code=zip_code, charges=charges, race=race, sex=sex, 
-    #                                     recommendation=recommendation, primary_charge_category=primary_charge_category,
-    #                                     risk_level=risk_level, praxis=praxis)
-    return text
+    first_name = fields['Name']['value'].split(' ')[0]
+    last_name = fields['Name']['value'].split(' ')[1]
+    date_of_birth = fields['DOB']['value']
+    zip_code = fields['Zip']['value']
+    charges = fields['Charge']['value']
+    race = fields['Race']['value']
+    sex = fields['Sex']['value']
+    recommendation = fields['Recommendation']['value']
+    primary_charge_category = fields['PrimaryCharge']['value']
+    risk_level = fields['RiskLevel']['value']
+    praxis = fields['Praxis']['value']
+    
+    print(first_name, last_name, date_of_birth, zip_code, charges, race, sex, recommendation, primary_charge_category, risk_level, praxis)
+    if not (first_name and last_name and date_of_birth and zip_code and charges and race and sex 
+        and recommendation and primary_charge_category and risk_level and praxis):
+        return False
+    else:
+        return DefendantDemographicInfoCreate(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth,
+                                            zip_code=zip_code, charges=charges, race=race, sex=sex, 
+                                            recommendation=recommendation, primary_charge_category=primary_charge_category,
+                                            risk_level=risk_level, praxis=praxis)
 #TESTS (THIS IS ASSUMING THAT OCR PROCESSING HAS ALREADY BEEN DONE CORRECTLY)
+ddi_schema_fill()

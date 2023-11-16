@@ -181,7 +181,7 @@ class DefendantDemographicInfoBase(BaseModel):
     charges: str_normalized
     race: Literal["white", "black", "asian", "other", "unknown"]
     sex: Literal["male", "female"]
-    recommendation: Literal["detain", "release without supervision", "release without supervision"]
+    recommendation: Literal["detain", "release without supervision", "release with supervision"]
     primary_charge_category: str_normalized
     risk_level: conint(ge=1, le=6)
     praxis: Literal[

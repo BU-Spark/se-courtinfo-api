@@ -74,10 +74,5 @@ async def upload_to_ocr(file):
     #return should return status?
     return result
 
-@d.post("/ddi/create")
-async def create_ddi(model: DefendantDemographicInfoBase):
-    ddi_filled = ddi_schema_fill()
-    response_data = {"message": "Success!"}
-    response = json.dumps(response_data).encode('utf-8')
-    return response
+
     
