@@ -102,7 +102,7 @@ class FormType(Base):
 
 class Upload(Base):
 
-    __table__ = "upload"
+    __tablename__ = "upload"
 
     id = Column(Integer, primary_key=True, index=True)
     form_type = Column(UUID(as_uuid=True), ForeignKey('form_type_id.id'))
@@ -111,6 +111,8 @@ class Upload(Base):
 
 
 class Photo(Base):
+    __tablename__ = "photo"
+
     id = Column(Integer, primary_key=True, index=True)
     Image = Column(LargeBinary)
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
@@ -120,12 +122,14 @@ class Photo(Base):
 
 
 class PhotoUpload(Base):
+    __tablename__ = "photo_upload"
     id = Column(Integer, primary_key=True, index=True)
     upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
     photo_id = Column(UUID(as_uuid=True), ForeignKey('photo.id'))
 
 
 class OCRResultMetaData(Base):
+    __tablename__ = "ocr_result_meta_data"
     id = Column(Integer, primary_key=True, index=True)
     upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
     field_name = Column(String)
@@ -133,6 +137,7 @@ class OCRResultMetaData(Base):
 
 
 class Status(Base):
+    __tablename__ = "status"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
