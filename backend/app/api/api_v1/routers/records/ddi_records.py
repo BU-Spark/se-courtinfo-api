@@ -59,20 +59,5 @@ ddi_record_router = d = APIRouter()
 #     ddi = update_ddi(db, current_user.id, model)
 #     return ddi.ddi_id
 
-#NEEDS TO BE EDITED (template)
-@d.post("/ddi/upload_to_ocr")
-async def upload_to_ocr(file):
-    # Save the uploaded file to a temporary location
-    with open("temp_image.jpg", "wb") as image_file:
-        image_file.write(file.file.read())
-
-    # Call the document analysis script
-    result = read_text("temp_image.jpg")
-
-    # Delete the temporary image file
-    os.remove("temp_image.jpg")
-    #return should return status?
-    return result
-
 
     
