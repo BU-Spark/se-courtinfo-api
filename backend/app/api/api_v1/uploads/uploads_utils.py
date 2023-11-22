@@ -56,3 +56,13 @@ def handle_upload_file(upload_file: UploadFile) -> Path:
     save_upload_file(upload_file, file_path)
 
     return file_path
+
+def handle_upload_files(files: list[UploadFile]) -> Path:
+    """
+    Handles accepting multiple uploaded files, renaming and saving to temp storage for
+    processing
+    """
+    for file in files:
+        file_name = uuid.uuid4().hex + Path(file.filename).suffix
+        file_path = Path(os.path.join(TEMP_FILE_PATH, file_name))
+        save_upload_file(file, file_path)
