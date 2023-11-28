@@ -97,6 +97,7 @@ class FormType(Base):
     id = Column(Integer, primary_key=True, index=True)
     cc_id = Column(Integer, ForeignKey('criminal_complaints.cc_id'))
     ddi_id = Column(Integer, ForeignKey('defendant_demographic_info.ddi_id'))
+
     form_type_description = Column(String)
     table_name = Column(String)
 
@@ -106,9 +107,9 @@ class Upload(Base):
     __tablename__ = "upload"
 
     id = Column(Integer, primary_key=True, index=True)
-    form_type = Column(UUID(as_uuid=True), ForeignKey('form_types.id'))
+    form_type = Column(Integer, ForeignKey('form_type_id.id'))
     form_id = Column(Integer)
-    status = Column(UUID(as_uuid=True), ForeignKey('status.id'))
+    status = Column(Integer, ForeignKey('status.id'))
 
 
 class Photo(Base):
@@ -118,21 +119,21 @@ class Photo(Base):
     Image = Column(LargeBinary)
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
     updated_at = Column(DateTime(timezone=True), onupdate=utcnow())
-    created_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
-    updated_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+    created_by = Column(Integer, ForeignKey('users.id'))
+    updated_by = Column(Integer, ForeignKey('users.id'))
 
 
 class PhotoUpload(Base):
     __tablename__ = "photo_upload"
     id = Column(Integer, primary_key=True, index=True)
-    upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
-    photo_id = Column(UUID(as_uuid=True), ForeignKey('photo.id'))
+    upload_id = Column(Integer, ForeignKey('upload.id'))
+    photo_id = Column(Integer, ForeignKey('photo.id'))
 
 
 class OCRResultMetaData(Base):
     __tablename__ = "ocr_result_meta_data"
     id = Column(Integer, primary_key=True, index=True)
-    upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
+    upload_id = Column(Integer, ForeignKey('upload.id'))
     field_name = Column(String)
     ocr_result = Column(Integer)
 
