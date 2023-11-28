@@ -95,7 +95,8 @@ class FormType(Base):
     __tablename__ = "form_types"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(UUID(as_uuid=True), ForeignKey('cc.id, ddi.id'))
+    cc_id = Column(Integer, ForeignKey('criminal_complaints.cc_id'))
+    ddi_id = Column(Integer, ForeignKey('defendant_demographic_info.ddi_id'))
     form_type_description = Column(String)
     table_name = Column(String)
 
