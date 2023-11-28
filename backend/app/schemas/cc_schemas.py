@@ -26,6 +26,7 @@ class CriminalComplaintBase(BaseModel):
     offense_codes: Optional[str]
     raw_text: Optional[str]
 
+
 class CriminalComplaintCreate(CriminalComplaintBase):
     created_by: UUID4
     img_key: str
@@ -67,12 +68,9 @@ class CriminalComplaint(CriminalComplaintInDBBase):
 
 class CriminalComplaintOut(CriminalComplaintBase):
     cc_id: int
-    created_by: UUID4
-    updated_by: Optional[UUID4]
-    created_at: datetime
-    updated_at: Optional[datetime]
-    img_key: Optional[str]
-    aws_bucket: Optional[str]
+    docket: str
+    defen_name: str
+    defen_adr: str
 
     class Config:
         orm_mode = True

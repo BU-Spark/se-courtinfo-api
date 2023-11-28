@@ -41,8 +41,10 @@ class HasCreatedAtUpdatedAt:
     def updated_by(self):
         return Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
 
-    created_at = Column(DateTime(timezone=True), server_default=utcnow(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), onupdate=utcnow(), server_default=utcnow(), nullable=False)
+    created_at = Column(DateTime(timezone=True),
+                        server_default=utcnow(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), onupdate=utcnow(),
+                        server_default=utcnow(), nullable=False)
 
 
 class CriminalComplaint(HasCreatedAtUpdatedAt, Base):
@@ -54,28 +56,16 @@ class CriminalComplaint(HasCreatedAtUpdatedAt, Base):
 
     cc_id = Column(Integer, primary_key=True, index=True)
     docket = Column(String)
-    number_of_counts = Column(Integer)
     defen_name = Column(String)
-    defen_adr = Column(String)
-    defen_DOB = Column(String)
-    court_name_adr = Column(String)
-    complaint_issued_date = Column(String)
-    offense_date = Column(String)
-    arrest_date = Column(String)
-    next_event_date = Column(String)
-    next_event_type = Column(String)
-    next_event_room_session = Column(String)
-    offense_city = Column(String)
-    offense_adr = Column(String)
-    offense_codes = Column(String)
-    police_dept = Column(String)
-    police_incident_num = Column(String)
-    OBTN = Column(String)
-    PCF_number = Column(String)
-    defen_xref_id = Column(String)
-    raw_text = Column(String)
-    img_key = Column(String)
-    aws_bucket = Column(String)
+    defen_adress = Column(String)
+    defen_date_of_birth = Column(Date)
+    complaint_issued_date = Column(Date)
+    offense_date = Column(Date)
+    arrest_date = Column(Date)
+    court_name_adress = Column(String)
+    police_incident_number = Column(String)
+    ofense_codes = Column(String)
+
 
 class DefendantDemoInfo(Base):
     """
@@ -83,16 +73,74 @@ class DefendantDemoInfo(Base):
     When a record is retrived from the database it will be of this type.
     """
     __tablename__ = "defendant_demographic_info"
-
     ddi_id = Column(Integer, primary_key=True, index=True)
-    created_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
-    updated_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+    first_name = Column(String)
+    last_name = Column(String)
+    date_of_birth = Column(Date)
+    zip_code = Column(String)
+    charges = Column(String)
+    race = Column(String)
+    sex = Column(String)
+    recommendation = Column(String)
+    primary_charge_category = Column(String)
+    risk_level = Column(String)
+    praxis = Column(String)
+
+
+class FormType(Base):
+    """
+    This represents how FormTypes are stored in the database, each field is a column with certain properties etc.
+    When a record is retrived from the database it will be of this type.
+    """
+    __tablename__ = "form_types"
+
+    id = Column(Integer, primary_key=True, index=True)
+    cc_id = Column(Integer, ForeignKey('criminal_complaints.cc_id'))
+    ddi_id = Column(Integer, ForeignKey('defendant_demographic_info.ddi_id'))
+
+    form_type_description = Column(String)
+    table_name = Column(String)
+
+
+class Upload(Base):
+
+    __tablename__ = "upload"
+
+    id = Column(Integer, primary_key=True, index=True)
+    form_type = Column(Integer, ForeignKey('form_types.id'))
+
+    form_id = Column(Integer)
+    status = Column(Integer, ForeignKey('status.id'))
+
+
+class Photo(Base):
+    __tablename__ = "photo"
+
+    id = Column(Integer, primary_key=True, index=True)
+    Image = Column(LargeBinary)
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
     updated_at = Column(DateTime(timezone=True), onupdate=utcnow())
-    zip: Column(Integer)
-    race: Column(String)
-    sex: Column(String)
-    recommendation: Column(String)
-    primary_charge_category: Column(String)
-    risk_level = Column(Integer)
-    rec_with_praxis: Column(String)
+    created_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+    updated_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+
+
+class PhotoUpload(Base):
+    __tablename__ = "photo_upload"
+    id = Column(Integer, primary_key=True, index=True)
+    upload_id = Column(Integer, ForeignKey('upload.id'))
+    photo_id = Column(Integer, ForeignKey('photo.id'))
+
+
+class OCRResultMetaData(Base):
+    __tablename__ = "ocr_result_meta_data"
+    id = Column(Integer, primary_key=True, index=True)
+    upload_id = Column(Integer, ForeignKey('upload.id'))
+    field_name = Column(String)
+    ocr_result = Column(Integer)
+
+
+class Status(Base):
+    __tablename__ = "status"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    description = Column(String)
