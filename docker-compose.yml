@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx:1.17
     ports:
-      - 80:80
+      - 90:80
       - 443:443
     depends_on:
       - backend
