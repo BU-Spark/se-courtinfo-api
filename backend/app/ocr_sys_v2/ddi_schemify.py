@@ -11,11 +11,18 @@ from array import array
 import os
 import sys
 import json
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine
 
 from app.ocr_sys_v2.ocr_read import *
 from app.schemas.user_schemas import *
 from app.schemas.ddi_schemas import *
       
+DATABASE_URL = "sqlite:///./test.db"  # Update with your actual database URL
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = Session(bind=engine)
+
 
 def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
     '''
@@ -58,11 +65,13 @@ def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
     else:
         #add to database?
         # dummy method
-        schema = DefendantDemographicInfoCreate(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth,
+        schema = DefendantDemographicInfo(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth,
                                             zip_code=zip_code, charges=charges, race=race, sex=sex, 
                                             recommendation=recommendation, primary_charge_category=primary_charge_category,
                                             risk_level=risk_level, praxis=praxis)
-        #db_add(schema)
+        session = SessionLocal()
+        session.add(schema)
+        session.commit()
+        session.close()
         return True
 #TESTS (THIS IS ASSUMING THAT OCR PROCESSING HAS ALREADY BEEN DONE CORRECTLY)
-ddi_schema_fill()

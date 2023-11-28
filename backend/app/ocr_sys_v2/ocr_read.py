@@ -50,7 +50,3 @@ def read_text(image: str) -> Optional[str]:
 
     return response
 
-
-
-image_path = os.path.abspath('backend/app/ocr_sys_v2/test_images/test_ddi.jpg')
-read_text(image_path)
