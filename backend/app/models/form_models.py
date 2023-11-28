@@ -120,21 +120,21 @@ class Photo(Base):
     Image = Column(LargeBinary)
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
     updated_at = Column(DateTime(timezone=True), onupdate=utcnow())
-    created_by = Column(Integer, ForeignKey('users.id'))
-    updated_by = Column(Integer, ForeignKey('users.id'))
+    created_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+    updated_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
 
 
 class PhotoUpload(Base):
     __tablename__ = "photo_upload"
     id = Column(Integer, primary_key=True, index=True)
-    upload_id = Column(Integer, ForeignKey('upload.id'))
-    photo_id = Column(Integer, ForeignKey('photo.id'))
+    upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
+    photo_id = Column(UUID(as_uuid=True), ForeignKey('photo.id'))
 
 
 class OCRResultMetaData(Base):
     __tablename__ = "ocr_result_meta_data"
     id = Column(Integer, primary_key=True, index=True)
-    upload_id = Column(Integer, ForeignKey('upload.id'))
+    upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
     field_name = Column(String)
     ocr_result = Column(Integer)
 
