@@ -107,7 +107,8 @@ class Upload(Base):
     __tablename__ = "upload"
 
     id = Column(Integer, primary_key=True, index=True)
-    form_type = Column(Integer, ForeignKey('form_type_id.id'))
+    form_type = Column(Integer, ForeignKey('form_types.id'))
+
     form_id = Column(Integer)
     status = Column(Integer, ForeignKey('status.id'))
 
