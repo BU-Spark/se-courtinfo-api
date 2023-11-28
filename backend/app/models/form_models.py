@@ -127,8 +127,8 @@ class Photo(Base):
 class PhotoUpload(Base):
     __tablename__ = "photo_upload"
     id = Column(Integer, primary_key=True, index=True)
-    upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
-    photo_id = Column(UUID(as_uuid=True), ForeignKey('photo.id'))
+    upload_id = Column(Integer, ForeignKey('upload.id'))
+    photo_id = Column(Integer, ForeignKey('photo.id'))
 
 
 class OCRResultMetaData(Base):
