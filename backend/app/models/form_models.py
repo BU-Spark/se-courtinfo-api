@@ -134,7 +134,7 @@ class PhotoUpload(Base):
 class OCRResultMetaData(Base):
     __tablename__ = "ocr_result_meta_data"
     id = Column(Integer, primary_key=True, index=True)
-    upload_id = Column(UUID(as_uuid=True), ForeignKey('upload.id'))
+    upload_id = Column(Integer, ForeignKey('upload.id'))
     field_name = Column(String)
     ocr_result = Column(Integer)
 
