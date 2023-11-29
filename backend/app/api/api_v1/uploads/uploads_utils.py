@@ -5,10 +5,15 @@ import uuid
 import os.path
 from pathlib import Path
 
-ACCEPTED_FILE_FORMATS: List[str] = ["image/jpeg", "image/png", "application/pdf"]
+ACCEPTED_FILE_FORMATS: List[str] = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+]
 WRITE_BUFFER_SIZE = 100
 # Relative path
-TEMP_FILE_PATH = 'uploaded_files/'
+TEMP_FILE_PATH = os.path.join(os.path.dirname(__file__), "uploaded_files")
 
 
 def verify_uploaded_file_type(file: UploadFile = File(...)):
@@ -22,9 +27,8 @@ def verify_uploaded_file_type(file: UploadFile = File(...)):
     """
     if file is None or file.content_type not in ACCEPTED_FILE_FORMATS:
         raise HTTPException(status_code=400, detail="Bad uploaded file format")
+    
 
-
-# Taken from https://github.com/tiangolo/fastapi/issues/426#issuecomment-542828790
 def save_upload_file(upload_file: UploadFile, destination: Path) -> None:
     """
     Takes an FastAPI UploadFile and saves it to the specified destination
@@ -41,28 +45,33 @@ def save_upload_file(upload_file: UploadFile, destination: Path) -> None:
     finally:
         upload_file.file.close()
 
-
-def handle_upload_file(upload_file: UploadFile) -> Path:
-    """
-    Handles accepting the uploaded file, renaming and saving to temp storage for
-    processing
-    :param upload_file: Uploaded file from request body
-    :type upload_file: FastAPi UploadFile
-    :return: Relative path to file(with file name)
-    :rtype: os.Path object
-    """
-    file_name = uuid.uuid4().hex + Path(upload_file.filename).suffix
-    file_path = Path(os.path.join(TEMP_FILE_PATH, file_name))
-    save_upload_file(upload_file, file_path)
-
-    return file_path
-
-def handle_upload_files(files: list[UploadFile]) -> Path:
+def handle_upload_files(files: list[UploadFile]) -> List[Path]:
     """
     Handles accepting multiple uploaded files, renaming and saving to temp storage for
     processing
     """
+    file_paths = []
     for file in files:
         file_name = uuid.uuid4().hex + Path(file.filename).suffix
-        file_path = Path(os.path.join(TEMP_FILE_PATH, file_name))
+        file_path = Path(TEMP_FILE_PATH).joinpath(file_name) 
         save_upload_file(file, file_path)
+        file_paths.append(file_path)
+
+    return file_paths if file_paths else None
+
+# def get_uploaded_files_type(files: list[UploadFile] = list[File(...)]) -> ACCEPTED_FILE_FORMATS:
+#     """
+#     Verifies the passed UploadFile complies with the restrictions specified.
+#     Throws 400 error if file does not conform
+#     :param file: UploadFile from request body
+#     :type file: UploadFile
+#     :return: None
+#     :rtype: None
+#     """
+#     if files[0] is None or files[0].content_type not in ACCEPTED_FILE_FORMATS:
+#         raise HTTPException(status_code=400, detail="Bad uploaded file format")
+#     else:
+#         return files[0].content_type not in ACCEPTED_FILE_FORMATS
+
+
+# Taken from https://github.com/tiangolo/fastapi/issues/426#issuecomment-542828790
