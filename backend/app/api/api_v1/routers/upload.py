@@ -1,10 +1,12 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, UploadFile, BackgroundTasks
 from pydantic.types import UUID4
 from pydantic import BaseModel, UUID4, ByteSize
 import logging
 
 from app.api.api_v1.uploads.uploads_utils import handle_upload_files
+from app.ocr_sys_v2.ocr_read import read_text
+from app.api.api_v1.bg_task import process_images_background
 from app.api.api_v1.uploads.uploads_utils import verify_uploaded_file_type
 from app.core.auth import get_current_active_user, get_current_active_superuser
 
@@ -22,9 +24,15 @@ def upload_form(
     files: list[UploadFile],
     # current_user = Depends(get_current_active_superuser),  
 ):
+    # form_type = 1
     print("call upload function")
     paths = handle_upload_files(files)
-    # form_type = 1
+    for path in paths:
+        print("Hi")
+        s = read_text(str(path))
+        print(s)
+    # background_tasks = BackgroundTasks()
+    # process_images_background(paths, background_tasks)
     return {"status": "succeeded", "urlSource": paths}
 
 # response model for return
