@@ -24,7 +24,7 @@ from app.schemas.ddi_schemas import *
 # SessionLocal = Session(bind=engine)
 
 
-def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
+def ddi_schema_fill(text: dict) -> Optional[DefendantDemographicInfoBase]:
     '''
     A Defendant Demographic Info Form is made up of the following fields:
     first_name: str_normalized
@@ -41,11 +41,9 @@ def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
         "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]
     This function takes in the text from the image and fills in the appropriate fields.
     '''
-    with open('backend/app/ocr_sys_v2/test_output.json') as json_file:
-        text = json.load(json_file)
-
+    if text['documents'] == []:
+        return False
     fields = text['documents'][0]['fields']
-
     first_name = fields['Name']['value'].split(' ')[0]
     last_name = fields['Name']['value'].split(' ')[1]
     date_of_birth = fields['DOB']['value']

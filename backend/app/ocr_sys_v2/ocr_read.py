@@ -35,13 +35,7 @@ def read_text(image: str) -> Optional[str]:
         result = poller.result()
 
     result_json = result.to_dict()
-    # Save the result to a JSON file
-    with open('app/ocr_sys_v2/test_output.json', "w") as json_file:
-        json.dump(result_json, json_file, indent=4)
-    
-    #dummy response
-    #call schemify
-    response = ddi_schema_fill()
+    response = ddi_schema_fill(result_json)
     
     if response == False:
         response_data = {"message": "Error!"}

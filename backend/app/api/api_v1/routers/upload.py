@@ -31,8 +31,6 @@ def upload_form(
         print("Hi")
         s = read_text(str(path))
         print(s)
-    # background_tasks = BackgroundTasks()
-    # process_images_background(paths, background_tasks)
     return {"status": "succeeded", "urlSource": paths}
 
 # response model for return
