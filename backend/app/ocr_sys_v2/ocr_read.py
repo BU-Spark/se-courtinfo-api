@@ -22,8 +22,8 @@ load_dotenv()
 
 #NEEDS TO BE EDITED
 def read_text(image: str) -> Optional[str]:
-    api_key = os.environ.get("VISION_KEY")
-    endpoint = os.environ.get("VISION_ENDPOINT")
+    api_key = os.getenv("VISION_KEY")
+    endpoint = os.getenv("VISION_ENDPOINT")
     credential = AzureKeyCredential(api_key)
     document_client = DocumentAnalysisClient(endpoint, credential)
 
@@ -32,13 +32,8 @@ def read_text(image: str) -> Optional[str]:
         result = poller.result()
 
     result_json = result.to_dict()
-    # Save the result to a JSON file
-    with open('backend/app/ocr_sys_v2/test_output.json', "w") as json_file:
-        json.dump(result_json, json_file, indent=4)
     
-    #dummy response
-    #call schemify
-    response = ddi_schema_fill()
+    response = ddi_schema_fill(result_json)
     
     if response == False:
         response_data = {"message": "Error!"}

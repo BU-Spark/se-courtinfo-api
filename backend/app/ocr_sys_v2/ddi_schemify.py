@@ -17,14 +17,11 @@ from sqlalchemy import create_engine
 from app.ocr_sys_v2.ocr_read import *
 from app.schemas.user_schemas import *
 from app.schemas.ddi_schemas import *
+from app.db.session import SessionLocal, engine
+from app.crud.ddi_crud import *
       
-DATABASE_URL = "sqlite:///./test.db"  # Update with your actual database URL
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = Session(bind=engine)
-
-
-def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
+def ddi_schema_fill(text: dict) -> Optional[DefendantDemographicInfoBase]:
     '''
     A Defendant Demographic Info Form is made up of the following fields:
     first_name: str_normalized
@@ -41,8 +38,8 @@ def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
         "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]
     This function takes in the text from the image and fills in the appropriate fields.
     '''
-    with open('backend/app/ocr_sys_v2/test_output.json') as json_file:
-        text = json.load(json_file)
+    if text['documents'] ==[]:
+        return False
 
     fields = text['documents'][0]['fields']
 
@@ -69,9 +66,7 @@ def ddi_schema_fill() -> Optional[DefendantDemographicInfoBase]:
                                             zip_code=zip_code, charges=charges, race=race, sex=sex, 
                                             recommendation=recommendation, primary_charge_category=primary_charge_category,
                                             risk_level=risk_level, praxis=praxis)
-        session = SessionLocal()
-        session.add(schema)
-        session.commit()
-        session.close()
+        
+        create_ddi(db=SessionLocal(), ddi=schema)
         return True
 #TESTS (THIS IS ASSUMING THAT OCR PROCESSING HAS ALREADY BEEN DONE CORRECTLY)
