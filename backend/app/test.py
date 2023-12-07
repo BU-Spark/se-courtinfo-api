@@ -6,7 +6,6 @@ from app.ocr_sys_v2.ocr_read import read_text
 @pytest.fixture
 def image_path():
     # Provide the path to a sample image for testing
-    # You may need to adjust this path based on your project structure
     return os.path.join(os.path.dirname(__file__), '/ocr_sys_v2/test_images/test_ddi.jpg')
 
 def test_read_text_success(image_path, mocker):
