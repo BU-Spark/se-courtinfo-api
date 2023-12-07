@@ -44,12 +44,27 @@ def save_upload_file(upload_file: UploadFile, destination: Path) -> None:
             shutil.copyfileobj(upload_file.file, buffer, WRITE_BUFFER_SIZE)
     finally:
         upload_file.file.close()
+def clear_upload_directory(directory: Path) -> None:
+    """
+    Clears all files inside the specified directory
+    """
+    try:
+        for file in directory.iterdir():
+            if file.is_file():
+                file.unlink()
+        print("delete all files")
+    except Exception as e:
+        # Handle exceptions if directory doesn't exist or other errors occur
+        print(f"Error clearing directory: {e}")
 
 def handle_upload_files(files: list[UploadFile]) -> List[Path]:
     """
     Handles accepting multiple uploaded files, renaming and saving to temp storage for
     processing
     """
+    upload_directory = Path(TEMP_FILE_PATH)
+    clear_upload_directory(upload_directory)
+
     file_paths = []
     for file in files:
         file_name = uuid.uuid4().hex + Path(file.filename).suffix

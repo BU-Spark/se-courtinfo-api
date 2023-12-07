@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, File, UploadFile, BackgroundTasks
+from fastapi import APIRouter, Depends, File, Form, UploadFile, BackgroundTasks
 from pydantic.types import UUID4
 from pydantic import BaseModel, UUID4, ByteSize
 import logging
@@ -7,7 +7,6 @@ import logging
 from app.api.api_v1.uploads.uploads_utils import handle_upload_files
 from app.ocr_sys_v2.ocr_read import read_text
 from app.api.api_v1.bg_task import process_images_background
-from app.api.api_v1.uploads.uploads_utils import verify_uploaded_file_type
 from app.core.auth import get_current_active_user, get_current_active_superuser
 
 uploads_router = u = APIRouter()
@@ -18,20 +17,18 @@ uploads_router = u = APIRouter()
     responses = {400: {"description": "Returned when the uploaded file does not match the valid params"}}
 )
 def upload_form(
-    # upload_id: Optional[UUID4],
-    # upload_data: UploadFormData,
-    # form_type: int,
     files: list[UploadFile],
+    form_type: int = Form(),
     # current_user = Depends(get_current_active_superuser),  
 ):
-    # form_type = 1
     print("call upload function")
     paths = handle_upload_files(files)
     for path in paths:
         print("Hi")
         s = read_text(str(path))
         print(s)
-    return {"status": "succeeded", "urlSource": paths}
+
+    return {"status": "succeeded",  "form_type": form_type, "urlSource": paths}
 
 # response model for return
 # use async def (: Item) -> Item
