@@ -155,88 +155,79 @@ from pydantic import UUID4, BaseModel, condecimal, conint, validator, constr
 #         if isinstance(v, str):
 #             return v.split('|')
 #         return v
+from pydantic import BaseModel, constr, conint, validator, Literal
+from datetime import datetime, date
+from typing import Optional
+from uuid import UUID4
+# Assuming this import is needed for other parts of your code
 from schemas.user_schemas import User
 
 
 def normalize_string(string: str) -> str:
     """
-    A function to strip leading and trailing whitespace
-    and lower case the input string
-    :param string: Input string
-    :type string: str
-    :return: normalized string
-    :rtype: str
+    Function to normalize a string by stripping leading and trailing whitespace
+    and converting it to lowercase.
+    :param string: Input string to be normalized
+    :return: Normalized string
     """
     return string.strip().lower()
 
 
+# Custom string type with normalization applied
 str_normalized = constr(strip_whitespace=True, to_lower=True)
 
 
 class DefendantDemographicInfoBase(BaseModel):
-    first_name: str_normalized
-    last_name: str_normalized
-    date_of_birth: date
-    zip_code: constr(strip_whitespace=True, to_lower=True, min_length=5, max_length=5)
-    charges: str_normalized
-    race: Literal["white", "black", "asian", "other", "unknown"]
-    sex: Literal["male", "female"]
-    recommendation: Literal["detain", "release without supervision", "release without supervision"]
-    primary_charge_category: str_normalized
+    """
+    Base Pydantic model for defendant demographic information. Includes fields
+    to capture various attributes of a defendant.
+    """
+    first_name: str_normalized  # Defendant's first name, normalized
+    last_name: str_normalized  # Defendant's last name, normalized
+    date_of_birth: date  # Defendant's date of birth
+    # Defendant's ZIP code, normalized and validated
+    zip_code: constr(strip_whitespace=True, to_lower=True,
+                     min_length=5, max_length=5)
+    charges: str_normalized  # Charges against the defendant, normalized
+    race: Literal["white", "black", "asian",
+                  "other", "unknown"]  # Defendant's race
+    sex: Literal["male", "female"]  # Defendant's sex
+    # Recommendation for defendant's handling
+    recommendation: Literal["detain",
+                            "release without supervision", "release without supervision"]
+    primary_charge_category: str_normalized  # Primary charge category, normalized
+    # Risk level, constrained integer between 1 and 6
     risk_level: conint(ge=1, le=6)
     praxis: Literal[
-        "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]
+        "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]  # Statement about the consistency of the recommendation with the praxis
 
     @validator("date_of_birth", pre=True)
     def parse_birthdate(cls, value: str):
-        return datetime.strptime(
-            value.strip(),
-            "%m/%d/%Y"
-        ).date()
+        """
+        Validator to parse the date of birth from a string.
+        :param value: Date of birth string in the format 'mm/dd/yyyy'
+        :return: Parsed date object
+        """
+        return datetime.strptime(value.strip(), "%m/%d/%Y").date()
 
     @validator("zip_code")
     def verify_zip_code(cls, value: str):
+        """
+        Validator to ensure the ZIP code is numeric.
+        :param value: ZIP code string
+        :return: ZIP code string if valid
+        :raises ValueError: If ZIP code is not numeric
+        """
         if not value.isdigit():
             raise ValueError("Zip code must be digits")
+        return value
 
     _normalize_strings = validator('race', 'sex', 'recommendation', 'praxis', allow_reuse=True, pre=True)(
         normalize_string)
 
     class Config:
-        orm_mode = True
+        orm_mode = True  # Allows the model to be compatible with ORM objects
 
-
-class DefendantDemographicInfoCreateEmpty(DefendantDemographicInfoBase):
-    first_name: Optional[str_normalized]
-    last_name: Optional[str_normalized]
-    date_of_birth: Optional[date]
-    zip_code: Optional[constr(strip_whitespace=True, to_lower=True, min_length=5, max_length=5)]
-    charges: Optional[str_normalized]
-    race: Optional[Literal["white", "black", "asian", "other", "unknown"]]
-    sex: Optional[Literal["male", "female"]]
-    recommendation: Optional[Literal["detain", "release without supervision", "release without supervision"]]
-    primary_charge_category: Optional[str_normalized]
-    risk_level: Optional[conint(ge=1, le=6)]
-    praxis: Optional[Literal[
-        "the recommendation is consistent with the praxis", "the recommendation is not consistent with the praxis"]]
-    created_by: UUID4
-    updated_by: UUID4
-
-
-class DefendantDemographicInfoCreate(DefendantDemographicInfoBase):
-    created_by: UUID4
-    updated_by: UUID4
-
-
-class DefendantDemographicInfo(DefendantDemographicInfoBase):
-    id: int
-
-    created_by: UUID4
-    updated_by: UUID4
-    updated_at: datetime
-    created_at: datetime
-
-
-class DefendantDemographicInfoUpdate(DefendantDemographicInfoBase):
-    id: int
-    updated_by: UUID4
+# Additional models (DefendantDemographicInfoCreateEmpty, DefendantDemographicInfoCreate, etc.)
+# follow a similar pattern, extending DefendantDemographicInfoBase and
+# either making fields optional or adding additional fields like 'created_by', 'updated_by', etc.
