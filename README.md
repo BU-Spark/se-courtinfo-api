@@ -319,3 +319,7 @@ backend
    └── main.py # entrypoint to backend
 
 ```
+
+## Technical Architecture
+
+<img width="912" alt="architecture" src="https://github.com/BU-Spark/se-courtinfo-api/assets/69309411/2268da5d-197d-4f90-bf08-caa353e7f74e">
