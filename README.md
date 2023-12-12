@@ -8,6 +8,16 @@ The API is currently set up with multiple forms uploaded as an example of how th
 The current test form, a demographic defendant information form(called a ddi in the code) features an upload route to upload the documents and get a tracking ID to follow the progress of the processing. Records can be retrieved from the `/api/api_v1/uploads` endpoint -- along with URLs for uploaded images. All of these routes related to uploading, viewing, verifying documents, and retrieving the status of text-parsing by using the Azure OCR parsing tool. 
 
 
+## Current Progress
+
+Currently, these are the major components that have been implemented:
+- Backend and frontend are connected
+- Upload routes are completed
+- The backend is able to successfully call Azure OCR and return output
+- Schemas and models have been built
+- The output from Azure is parsed and stored into a schema
+
+
 ## Major Items that need updating/TODO
 
 
