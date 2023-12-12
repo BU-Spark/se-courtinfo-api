@@ -22,7 +22,7 @@ load_dotenv()
 
 #NEEDS TO BE EDITED
 def read_text(image: str) -> Optional[str]:
-    print("Hi")
+    print("Calling Azure Doc Intelligence...")
     api_key = os.getenv("VISION_KEY")
     print(type(api_key))
     endpoint = os.getenv("VISION_ENDPOINT")

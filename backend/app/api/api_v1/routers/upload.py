@@ -11,6 +11,7 @@ from app.core.auth import get_current_active_user, get_current_active_superuser
 
 uploads_router = u = APIRouter()
 
+# The upload feature verifies the type of the files and pass the files to read_text function one by one. 
 @u.post(
     "/upload",
     # dependencies = [Depends(verify_uploaded_file_type)],
@@ -19,12 +20,11 @@ uploads_router = u = APIRouter()
 def upload_form(
     files: list[UploadFile],
     form_type: int = Form(),
-    # current_user = Depends(get_current_active_superuser),  
 ):
     print("call upload function")
     paths = handle_upload_files(files)
     for path in paths:
-        print("Hi")
+        print("Reading texts")
         s = read_text(str(path))
         print(s)
 

@@ -12,7 +12,7 @@ ACCEPTED_FILE_FORMATS: List[str] = [
     "application/pdf",
 ]
 WRITE_BUFFER_SIZE = 100
-# Relative path
+# Relative path, where stores the scanned documents
 TEMP_FILE_PATH = os.path.join(os.path.dirname(__file__), "uploaded_files")
 
 
@@ -44,6 +44,7 @@ def save_upload_file(upload_file: UploadFile, destination: Path) -> None:
             shutil.copyfileobj(upload_file.file, buffer, WRITE_BUFFER_SIZE)
     finally:
         upload_file.file.close()
+
 def clear_upload_directory(directory: Path) -> None:
     """
     Clears all files inside the specified directory
@@ -73,20 +74,3 @@ def handle_upload_files(files: list[UploadFile]) -> List[Path]:
         file_paths.append(file_path)
 
     return file_paths if file_paths else None
-
-# def get_uploaded_files_type(files: list[UploadFile] = list[File(...)]) -> ACCEPTED_FILE_FORMATS:
-#     """
-#     Verifies the passed UploadFile complies with the restrictions specified.
-#     Throws 400 error if file does not conform
-#     :param file: UploadFile from request body
-#     :type file: UploadFile
-#     :return: None
-#     :rtype: None
-#     """
-#     if files[0] is None or files[0].content_type not in ACCEPTED_FILE_FORMATS:
-#         raise HTTPException(status_code=400, detail="Bad uploaded file format")
-#     else:
-#         return files[0].content_type not in ACCEPTED_FILE_FORMATS
-
-
-# Taken from https://github.com/tiangolo/fastapi/issues/426#issuecomment-542828790
