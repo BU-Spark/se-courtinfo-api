@@ -27,7 +27,8 @@ This is a hopefully exhaustive list of all the technical debts that have crept i
 - Background Task Errors: Currently the background task is not giving the correct feedback when calling the OCR/Azure tasks. The current workaround is to directly call the OCR without using a background task to create it. 
 - There is still a disconnect between retrieving information from Azure and uploading it to the database. CRUD functionality is not fully tested any may be buggy.
 - Fully flesh out the database and begin the implementation of the retrieval feature (this will need to be integrated with the frontend)
-- Feature of scanned documents retrieval from database. Backend task includes the update of `records`. Frontend tasks include the creation of a provider for retrieving documents from the corresponding api, updating the scanned document list shown on the home page, and fetching the most up-to-date status of the scanned ducuments. 
+- Feature of scanned documents retrieval from database. Backend task includes the update of `records`. Frontend tasks include the creation of a provider for retrieving documents from the corresponding api, updating the scanned document list shown on the home page, and fetching the most up-to-date status of the scanned ducuments.
+- Deployment issues: Deploying should be smooth, but if any issues arise, see Railway Deployment Comments.
 
 
 ### API Documentation
@@ -303,7 +304,27 @@ docker-compose logs -f name_of_service # frontend|backend|db
 ```
 
 
+# Railway Deployment Comments
 
+TODO: Fix Deployment Issues on Railway
+The deployment process on Railway still encounters issues that need resolution.
+Specific areas requiring attention include:
+
+# 1. Postgres Database Setup
+- Ensure that the Postgres database is correctly set up in the Railway deployment environment.
+- This includes configuring the database connections and ensuring data integrity during deployment.
+
+# 2. Nginx Deployment for Python API
+- Deploy the Python API using Nginx.
+- The deployment process should ensure that the API is properly exposed and accessible.
+- Check the Nginx configuration files for correct routing and server blocks.
+
+# Note: Previous Deployment Attempts
+- There was an attempt to deploy directly using Nginx, but this approach had mixed results.
+- The backend seems to be properly deployed, but further testing and verification are required.
+- It's crucial to check the logs and configurations to identify any underlying issues.
+
+  
 
 ## Project Layout
 
