@@ -315,3 +315,30 @@ frontend
     ├── index.tsx   # entrypoint
     └── App.tsx     # handles routing
 ```
+
+
+# Railway Deployment Comments
+
+TODO: Fix Deployment Issues on Railway
+The deployment process on Railway still encounters issues that need resolution.
+Specific areas requiring attention include:
+
+# 1. Postgres Database Setup
+- Ensure that the Postgres database is correctly set up in the Railway deployment environment.
+- This includes configuring the database connections and ensuring data integrity during deployment.
+
+# 2. Nginx Deployment for Python API
+- Deploy the Python API using Nginx.
+- The deployment process should ensure that the API is properly exposed and accessible.
+- Check the Nginx configuration files for correct routing and server blocks.
+
+# Note: Previous Deployment Attempts
+- There was an attempt to deploy directly using Nginx, but this approach had mixed results.
+- The backend seems to be properly deployed, but further testing and verification are required.
+- It's crucial to check the logs and configurations to identify any underlying issues.
+
+# Next Steps:
+- Review the current deployment scripts and configurations.
+- Test the deployment process in a controlled environment before pushing to production.
+- Ensure all dependencies and environment variables are correctly set up in Railway.
+- Collaborate with the team to troubleshoot and resolve any ongoing issues.
