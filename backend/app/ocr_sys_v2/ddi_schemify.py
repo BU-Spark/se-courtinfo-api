@@ -72,6 +72,6 @@ def ddi_schema_fill(text: dict) -> Optional[DefendantDemographicInfoBase]:
                                             recommendation=recommendation, primary_charge_category=primary_charge_category,
                                             risk_level=risk_level, praxis=praxis)
         
-        create_ddi(db=SessionLocal(), ddi=schema)
+        #create_ddi(db=SessionLocal(), ddi=schema)
         return True
 #TESTS (THIS IS ASSUMING THAT OCR PROCESSING HAS ALREADY BEEN DONE CORRECTLY)
