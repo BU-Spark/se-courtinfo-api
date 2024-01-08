@@ -77,6 +77,7 @@ class CriminalComplaint(HasCreatedAtUpdatedAt, Base):
     img_key = Column(String)
     aws_bucket = Column(String)
 
+
 class DefendantDemoInfo(Base):
     """
     This represents how DDI are stored in the database, each field is a column with certain properties etc.
@@ -85,11 +86,15 @@ class DefendantDemoInfo(Base):
     __tablename__ = "defendant_demographic_info"
 
     ddi_id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    date_of_birth = Column(String)
+
     created_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
     updated_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
     updated_at = Column(DateTime(timezone=True), onupdate=utcnow())
-    zip: Column(Integer)
+    zip_code: Column(Integer)
     race: Column(String)
     sex: Column(String)
     recommendation: Column(String)
